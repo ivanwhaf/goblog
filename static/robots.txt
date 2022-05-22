@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /files
+Disallow: /study
+Disallow: /login
+Disallow: /album
+Disallow: /echarts
+Disallow: /video
+Disallow: /about
+Disallow: /article/search

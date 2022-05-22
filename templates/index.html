@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="baidu_union_verify" content="c473ddba0eb7b759f6551f311f22131d">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="这是Ivan的个人博客，机器学习、深度学习、图像识别、爬虫、数据分析、Python、Java、Unity3D">
+    <meta name="keywords" content="个人博客、机器学习、深度学习、图像识别、爬虫、数据分析、Python、Java、Unity3D">
+    <meta name="robots" content="all">
+    <script src="/static/js/fastclick.min.js"></script>
+    <script async="" defer="" src="/static/js/buttons.js"></script>
+    <title>
+        Ivan | Blog
+        {{ if .nickname }}
+        —{{ .nickname }}欢迎您！
+        {{ end }}
+    </title>
+    <!--
+	<link rel="shortcut icon" href="/static/wallpaper/1.ico">
+	-->
+    <link rel="icon" href="/static/wallpaper/1.png" type="image/png"/>
+
+    <link rel="canonical" href="http://www.ivana.work">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/beantech.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <!--
+    <link rel="stylesheet" href="/static/css/highlight.dcss">
+    <link rel="stylesheet" href="/static/css/widget.css">
+    <link rel="stylesheet" href="/static/css/signature.css">
+    <link rel="stylesheet" href="/static/css/toc.css">
+    -->
+    <link rel="stylesheet" href="/static/css/rocket.css">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        header.intro-header {
+            background-image: url('/static/wallpaper/home5.jpg')
+        }
+</style>
+</head>
+
+<body ontouchstart="">
+<!-- Post Header -->
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+                    <div class="site-heading">
+                        <h1>Ivan</h1>
+                        <span class="subheading">个人博客</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ivan's Blog</a>
+        </div>
+
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {{ if .nickname }}
+                    <li>
+                        <a href="/admin/{{ .username }}" title="个人主页">{{ .nickname }}</a>
+                    </li>
+                    {{ end }}
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                    <li>
+                        <a href="/archives">Archives</a>
+                    </li>
+                    <li>
+                        <a href="/tags">Tags</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e) {
+        if ($navbar.className.indexOf('in') > 0) {
+            // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function () {
+                // prevent frequently toggle
+                if ($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            }, 400)
+        } else {
+            // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <!-- Post Container -->
+        <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container" id="essay">
+
+            {{ range $article:=.articles }}
+            <div class="post-preview">
+                <a href="/article/{{ $article.Tag }}/{{ $article.Id }}" target="_blank">
+                    <h2 class="post-title">[{{ $article.Tag }}] {{ $article.Title }}</h2>
+                    <h3 class="post-subtitle">{{ $article.Subtitle }}</h3>
+                    <div class="post-content-preview">{{ $article.ContentText }}......</div>
+                </a>
+                <p class="post-meta" style="margin: 10px 0;">Posted by {{ $article.Author }} on {{ $article.CreateDate }}&nbsp;&nbsp;ID:{{
+                    $article.Id }}&nbsp;&nbsp;Page View:{{ $article.ReadCount }}</p>
+                <div class="tags"><a href="/tags#{{ $article.Tag }}">{{ $article.Tag }}</a></div>
+            </div>
+            <hr>
+            {{ end }}
+
+            <ul class="pager" id="pa">
+                {{ if ne .page 1 }}
+                <li class="previous">
+                    <a href="/?page={{ .pageSub1 }}">&larr; Newer Posts</a>
+                </li>
+                {{ end }}
+
+                {{ if lt .pageMul10 .articlesCount }}
+                <li class="next">
+                    <a href="/?page={{ .pagePlu1 }}">Older Posts →</a>
+                </li>
+                {{ end }}
+            </ul>
+            <br>
+
+            <audio id="music" controls="controls" src="/static/music/Coldplay - A Sky Full Of Stars.mp3">
+                你的浏览器版本太低，不支持audio标签
+            </audio>
+        </div>
+
+        <!-- Sidebar Container -->
+        <div class="
+            col-lg-3 col-lg-offset-0
+            col-md-3 col-md-offset-0
+            col-sm-12
+            col-xs-12
+            sidebar-container">
+            <section>
+                <h5><a href="javascript:void(0)">FEATURED TAGS</a></h5>
+                <div class="tags">
+                    <a href="javascript:void(0)">AI</a>
+                    <a href="javascript:void(0)">机器学习</a>
+                    <a href="javascript:void(0)">深度学习</a>
+                    <a href="javascript:void(0)">主动学习</a>
+                    <a href="javascript:void(0)">半监督学习</a>
+                    <a href="javascript:void(0)">CV</a>
+                    <a href="javascript:void(0)">数据分析</a>
+                    <a href="javascript:void(0)">物联网</a>
+                    <a href="javascript:void(0)">机器人</a>
+                    <a href="javascript:void(0)">Unity3D</a>
+                    <a href="javascript:void(0)">Linux</a>
+                    <a href="javascript:void(0)">网络安全</a>
+                    <a href="javascript:void(0)">Python</a>
+                    <a href="javascript:void(0)">Java</a>
+                    <a href="javascript:void(0)">C++</a>
+                </div>
+            </section>
+            <hr>
+
+            <section class="visible-md visible-lg">
+                <h5><a href="/about">ABOUT ME</a></h5>
+                <div class="short-about">
+                    <img id="avatar_pic" src="/static/wallpaper/me.jpg">
+                    <p>人，终有一死</p>
+                    <ul class="list-inline">
+                        <li>
+                            <a target="_blank" href="https://github.com/ivanwhaf">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="javascript:void(0);">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                    </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="javascript:void(0);">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-stack-1x fa-inverse">知</i>
+                                    </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <hr>
+
+            <h5><a href="javascript:void(0);">POPULAR POSTS</a></h5>
+            <ul class="list-inline" id="popular">
+                {{ range $pa:=.popularArticles }}
+                <li><a href="/article/{{ $pa.Tag }}/{{ $pa.Id }}">{{ $pa.Title }} ({{ $pa.ReadCount }})</a></li>
+                <br>
+                {{ end }}
+            </ul>
+
+            <hr>
+
+            <h5><a href="javascript:void(0);">FUNCTIONS</a></h5>
+            <ul class="list-inline">
+                <li><a href="/files" target="_blank">文件上传</a></li>
+                <li><a href="/manage" target="_blank">博客管理</a></li>
+                <li><a href="/article/search" target="_blank">全文检索</a></li>
+            </ul>
+
+            <ul class="list-inline">
+                <li><a href="/album" target="_blank">相册</a></li>
+                <li><a href="/video" target="_blank">视频监控</a></li>
+                <li><a href="/echarts" target="_blank">图表</a></li>
+                <li><a href="/login">登录</a></li>
+            </ul>
+
+            <ul class="list-inline">
+                <li><a href="/study" target="_blank">学习</a></li>
+            </ul>
+
+            <hr>
+            主页浏览量：{{ .visitorsCount }}
+            <br>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="javascript:void(0);">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-stack-1x fa-inverse">知</i>
+                                    </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                    </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://github.com/ivanwhaf">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <p class="copyright text-muted">
+                        Copyright © Ivan 2019-2022
+                        <br>
+                        Theme by <a href="http://beantech.org/">BeanTech</a>
+                        <span style="display: inline-block; margin: 0 5px;">
+                                <i class="fa fa-heart"></i>
+                            </span>
+                        re-Ported by <a href="http://www.ivana.work">Ivan</a> |
+                        <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                                width="100px" height="20px"
+                                src="//ghbtns.com/github-btn.html?user=ivanwhaf&repo=xxqg-helper&type=star&count=true">
+                        </iframe>
+                        <br>
+                        <a href="http://www.beian.miit.gov.cn">苏ICP备19029983号</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/static/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/static/js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/static/js/hux-blog.min.js"></script>
+
+    <!-- async load function -->
+    <script>
+            function async(u, c) {
+                var d = document, t = 'script',
+                    o = d.createElement(t),
+                    s = d.getElementsByTagName(t)[0];
+                o.src = u;
+                if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+                s.parentNode.insertBefore(o, s);
+            }
+    </script>
+
+    <script>
+            $(document).ready(function () {
+                document.getElementById("music").volume = 0.3;
+            });
+    </script>
+
+    <script>
+            async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+                var $nav = document.querySelector("nav");
+                if ($nav) FastClick.attach($nav);
+            })
+    </script>
+
+    <a id="rocket" href="/#top" class=""></a>
+    <script type="text/javascript" src="/static/js/totop.js" async=""></script>
+    <!--<script type="text/javascript" src="/static/js/toc.js" async=""></script>-->
+</div>
+</body>
+</html>

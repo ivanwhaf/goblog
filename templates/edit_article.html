@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/static/wallpaper/1.png">
+    <script async defer src="/static/js/buttons.js"></script>
+    <title>
+        Edit - Ivan | Blog
+    </title>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/editormd.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/beantech.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/static/css/rocket.css">
+
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        header.intro-header {
+            background-image: url('/static/wallpaper/edit.jpg')
+                /*page*/
+        }
+
+    </style>
+</head>
+
+<body ontouchstart="">
+<!-- Post Header -->
+
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+                    <div class="site-heading">
+                        <h1>Edit</h1>
+                        <span class="subheading"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ivan's Blog</a>
+        </div>
+
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {{ if .nickname }}
+                    <li>
+                        <a href="/admin/{{ .username }}"
+                           title="个人主页">{{ .nickname }}</a>
+                    </li>
+                    {{ end }}
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                    <li>
+                        <a href="/archives">Archives</a>
+                    </li>
+                    <li>
+                        <a href="/tags">Tags</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        $toggle.addEventListener('click', handleMagic)
+        function handleMagic(e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                // CLOSE
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            } else {
+                // OPEN
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+
+</script>
+
+<div class="fh5co-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-8 col-sm-8 col-xs-12">
+                <div class="col-md-25">
+                    <br>
+                    <form id="form" accept-charset="utf-8">
+                        <input type="hidden" name="id" id="id_" value="{{ .article.Id }}">
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text" name="title" id="title" class="form-control"
+                                           placeholder="Title" value="{{ .article.Title }}" style="height:40px;font-size:18px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text" name="subtitle" id="subtitle" class="form-control"
+                                           placeholder="Subtitle" value="{{ .article.Subtitle }}"
+                                           style="height:40px;font-size:18px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <select style="height:30px;width:100px" id="select" onchange="option_change();">
+                                        <option>{{ .article.Tag }}</option>
+                                        {{ range $tag:=.tags }}
+
+                                        <option>{{ $tag }}</option>
+
+                                        {{ end }}
+                                    </select>
+                                    <input type="text" name="tag" id="tag" class="form-control" placeholder="Tag"
+                                           value="{{ .article.Tag }}" style="height:40px;font-size:18px;">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                        <textarea name="content" id="content_hidden" cols="30" class="form-control"
+                                                  placeholder="Content" rows="30" wrap="hard"
+                                                  style="font-size:18px; display:none;">{{ .article.ContentMd }}
+                                        </textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="content-editor">
+                                            <textarea style="display:none;" id="content">
+                                            </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="button" onclick="edit_article();"
+                                           class="btn btn-primary btn-outline btn-lg btn-block" value="Edit">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/wu-yu-fan-66-20">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-stack-1x fa-inverse">知</i>
+                                </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a target="_blank" href="https://weibo.com/u/2438209224">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a target="_blank" href="https://github.com/ivanwhaf">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+
+                </ul>
+
+                <p class="copyright text-muted">
+                    Copyright © Ivan 2019-2022
+                    <br>
+                    Theme by <a href="http://beantech.org/">BeanTech</a>
+                    <span style="display: inline-block; margin: 0 5px;">
+                            <i class="fa fa-heart"></i>
+                        </span>
+                    re-Ported by <a href="http://www.ivana.work">Ivan</a> |
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                            width="100px" height="20px"
+                            src="//ghbtns.com/github-btn.html?user=ivanwhaf&repo=xxqg-helper&type=star&count=true"> >
+                    </iframe>
+                    <br>
+                    苏ICP备19029983号
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/static/js/jquery.min.js"></script>
+
+<script src="/static/js/editormd.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/hux-blog.min.js"></script>
+
+<script type="text/javascript">
+        var editor = editormd("content-editor", {
+            width: "100%",
+            height: "700",
+            path: "/static/lib/",
+            markdown: $("#content_hidden").val(),
+            saveHTMLToTextarea: true,
+            codeFold: true,
+            taskList: true,
+            emoji: true,
+            tocm: true,
+            tex: true,            // 开启科学公式TeX语言支持，默认关闭
+            flowChart: true,             // 开启流程图支持，默认关闭
+            sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭
+            imageUpload: true,
+            tocDropdown: true,
+            imageUpload: true,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "/api/editormd/album",
+            htmlDecode: false,
+            onload: function(){
+                initPasteDragImg(this);
+            }
+        });
+
+        function initPasteDragImg(Editor){
+        var doc = document.getElementById(Editor.id)
+        doc.addEventListener('paste', function (event) {
+        var items = (event.clipboardData || window.clipboardData).items;
+        var file = null;
+        if (items && items.length) {
+        // 搜索剪切板items
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    file = items[i].getAsFile();
+                    break;
+                }
+            }
+        }
+        else {
+            console.log("当前浏览器不支持");
+                return;
+            }
+            if (!file) {
+                console.log("粘贴内容非图片");
+                return;
+            }
+            uploadImg(file,Editor);
+        });
+
+        var dashboard = document.getElementById(Editor.id)
+        dashboard.addEventListener("dragover", function (e) {
+            e.preventDefault()
+            e.stopPropagation()
+        })
+        dashboard.addEventListener("dragenter", function (e) {
+            e.preventDefault()
+            e.stopPropagation()
+        })
+        dashboard.addEventListener("drop", function (e) {
+            e.preventDefault()
+            e.stopPropagation()
+         var files = this.files || e.dataTransfer.files;
+         uploadImg(files[0],Editor);
+         })
+    }
+
+    function uploadImg(file,Editor){
+        var formData = new FormData();
+        if(file==undefined){
+            alert("不支持的文件类型!");
+            return;
+        }
+        //var fileName=new Date().getTime()+"."+file.name.split(".").pop();
+        var fileName = file.name;
+        if(/\.(png|jpg|jpeg|gif|bmp|ico|webp)$/.test(fileName)){
+        }
+        else{
+            alert("不支持的文件类型!");
+            return;
+        }
+        formData.append('editormd-image-file', file, fileName);
+
+        $.ajax({
+            url: Editor.settings.imageUploadURL,
+            type: 'post',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function (msg) {
+                var success=msg['success'];
+                if(success==1){
+                    var url=msg["url"];
+                    if(/\.(png|jpg|jpeg|gif|bmp|ico|webp)$/.test(url)){
+                        Editor.insertValue("![image]("+msg["url"]+")");
+                    }else{
+                        Editor.insertValue("[下载附件]("+msg["url"]+")");
+                    }
+                }else{
+                    alert(msg["message"]);
+                }
+            }
+        });
+    }
+
+        function edit_article() {
+            var id = $("#id_").val();
+            var title = $("#title").val();
+            var subtitle = $("#subtitle").val();
+            var tag = $("#tag").val();
+            //content = $("#content").val();
+            var content_md = editor.getMarkdown(); //获取markdown文本
+            //var content_html=editor.getHTML(); //获取markdown HTML文本
+            var content_html = editor.getPreviewedHTML();
+            if (title == "" || tag == "" || content_md == "") {
+                alert("请填写完整信息!");
+                return false;
+            }
+            //var content=encodeURI($("#content").val());//url编码
+            //var form = new FormData($("#form")[0]);
+            var form = new FormData();
+            form.append("id", id);
+            form.append("title", title);
+            form.append("subtitle", subtitle);
+            form.append("tag", tag);
+            form.append("content_md", content_md);
+            form.append("content_html", content_html);
+            $.ajax({
+                url: "/api/article",
+                type: "put",
+                data: form,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                async: true,
+                success: function (data) {
+                    if (data == 1) {
+                        alert('博客修改成功!');
+                        window.location.href = "/";
+                    }
+                    else if (data == 0) {
+                        alert('博客修改失败!');
+                    }
+                    else {
+                        var r = confirm("您尚未登录或权限不足!确认重新登录么？");
+                        if (r != true) {
+                            return false;
+                        }
+                        window.location.href = '/login';
+                    }
+                }
+            })
+        }
+
+        function option_change() {
+            s = document.getElementById("select")
+            var i = s.selectedIndex;
+            var v = s.options[i].text;
+            document.getElementById("tag").value = v;
+        }
+
+        $("textarea").on('keydown', function (e) {
+            if (e.keyCode == 9) {
+                e.preventDefault();
+                var indent = '    ';
+                var start = this.selectionStart;
+                var end = this.selectionEnd;
+                var selected = window.getSelection().toString();
+                selected = indent + selected.replace(/\n/g, '\n' + indent);
+                this.value = this.value.substring(0, start) + selected + this.value.substring(end);
+                this.setSelectionRange(start + indent.length, start + selected.length);
+            }
+        })
+</script>
+
+<a id="rocket" href="#top" class=""></a>
+<script type="text/javascript" src="/static/js/totop.js?v=1.0.0" async=""></script>
+</body>
+
+</html>

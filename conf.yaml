@@ -1,0 +1,22 @@
+server:
+  port: 80
+db:
+  name: mysql
+  args: root:111111@(127.0.0.1:3306)/blog?charset=utf8mb4&parseTime=True&loc=Local
+admin:
+  sessionmaxage: 3600
+  defaultavatarname: head.jfif
+file:
+  uploadpermission: true
+  downloadpermission: true
+  publicfileallowtype: [mp4, jpg, png, gif, txt, doc, pdf, mp3, jpeg, docx, ico,pptx, xls, xlsx, ppt, pptx, py, exe, h5, rar, zip, 7z, jfif, apk, webp, db, bmp]
+  privatefileallowtype: [mp4, jpg, png, gif, txt, doc, pdf, mp3, jpeg, docx, ico,pptx, xls, xlsx, ppt, pptx, py, exe, h5, rar, zip, 7z, jfif, apk, webp, db, bmp]
+  albumfileallowtype: [jpg, png, gif, jpeg, jfif, webp, bmp, ico]
+  avatarfileallowtype: [jpg, jpeg, png, gif, jfif, bmp, ico]
+  publicfilepath: file/public/
+  privatefilepath: file/private/
+  albumrawfilepath: file/album/raw/
+  albumcompressfilepath: file/album/compress/
+  avatarfilepath: file/avatar/
+  robotstxtpath: static/robots.txt
+

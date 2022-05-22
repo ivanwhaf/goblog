@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="/static/wallpaper/1.png" rel="shortcut icon">
+    <script async defer src="/static/js/buttons.js"></script>
+    <title>
+        Study - Ivan | Blog
+    </title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/static/css/beantech.min.css" rel="stylesheet">
+
+    <!-- Pygments Highlight CSS -->
+    <link href="/static/css/rocket.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        header.intro-header {
+            background-image: url('/static/wallpaper/add.jpg')
+                /*page*/
+        }
+    </style>
+</head>
+
+<body ontouchstart="">
+<!-- Post Header -->
+
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+                    <div class="site-heading">
+                        <h1>Study</h1>
+                        <span class="subheading">学习</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button class="navbar-toggle" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ivan's Blog</a>
+        </div>
+
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/archives">Archives</a>
+                    </li>
+
+                    <li>
+                        <a href="/tags">Tags</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+        $toggle.addEventListener('click', handleMagic)
+        function handleMagic(e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                // CLOSE
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            } else {
+                // OPEN
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-7 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-8
+                col-xs-8
+                post-container
+                ">
+            <div class="col-md-15">
+                <div class="form-group">
+                    <div class="col-md-7">
+                        <input class="form-control" id="key" list="word_list" name="key" oninput="input_change()"
+                               onkeydown="enter();"
+                               placeholder="请输入要搜索的单词" style="height:55px;font-size:18px;" type="text">
+                        <datalist id="word_list">
+                        </datalist>
+                    </div>
+                    <div class="col-md-5">
+                        <input class="btn btn-primary" id="search_button" onclick="search();" style="width:120px"
+                               type="button" value="Search">
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <br><br>
+                    匹配的单词：
+                    <div id="word">
+                    </div>
+                    <br>
+                    <hr>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="
+                    col-lg-4 col-lg-offset-0
+                    col-md-5 col-md-offset-0
+                    col-sm-12
+                    col-xs-12
+                    sidebar-container
+                    ">
+            <div class="form-group">
+                <div class="col-md-18">
+                    <br>
+                    <input class="form-control" id="add_key" name="key"
+                           placeholder="请输入要增加的单词" style="height:55px;font-size:18px;" type="text">
+                </div>
+                <br>
+                <div class="col-md-18">
+                    <input class="form-control" id="add_value" name="key" onkeydown="enter2();"
+                           placeholder="请输入要增加的单词意思" style="height:55px;font-size:18px;" type="text">
+                </div>
+                <br>
+                <div class="col-md-13">
+                    <input class="btn btn-primary" id="add_button" onclick="add();" style="width:120px"
+                           type="button" value="Add">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="https://www.zhihu.com/people/wu-yu-fan-66-20" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-stack-1x fa-inverse">知</i>
+                                </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://weibo.com/u/2438209224" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/ivanwhaf" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright © Ivan 2019-2022
+                    <br>
+                    Theme by <a href="http://beantech.org/">BeanTech</a>
+                    <span style="display: inline-block; margin: 0 5px;">
+                            <i class="fa fa-heart"></i>
+                        </span>
+                    re-Ported by <a href="http://www.ivana.work">Ivan</a> |
+                    <iframe allowtransparency="true" frameborder="0" height="20px"
+                            scrolling="0"
+                            src="//ghbtns.com/github-btn.html?user=ivanwhaf&repo=xxqg-helper&type=star&count=true"
+                            style="margin-left: 2px; margin-bottom:-5px;"
+                            width="100px">
+                    </iframe>
+                    <br>
+                    苏ICP备19029983号
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/static/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/hux-blog.min.js"></script>
+
+<script type="text/javascript">
+        $("#key").focus();
+
+        function search() {
+            key = $("#key").val();
+            if (key === "") {
+                return false;
+            }
+            if(key.length>30){
+                alert('单词过长！');
+                return false;
+            }
+            var form = new FormData();
+            form.append("key", key);
+            form.append("limit", "10");
+            $.ajax({
+                url: "/api/study/dictionary/retrieval",
+                type: "post",
+                data: form,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                async: true,
+                success: function (data) {
+                    if (data==="0"){
+                        alert('您搜索的频率过快！请稍后再试！');
+                        return;
+                    }
+                    $("#word").empty();
+                    var words = data.words;
+                    if (words.length == 0) {
+                        $("#word").append('<div class="post-content-preview"><未找到相关单词></div>');
+                    }
+                    else{
+                        for (var i = 0; i < words.length; i++) {
+                            id = words[i].Id;
+                            key = words[i].Key_;
+                            value = words[i].Value_.substring(0,20);;
+                            $("#word").append(key+': '+value+'<br>');
+                        }
+                    }
+                }
+            })
+        }
+
+        function enter() {
+            if (event.keyCode === 13) {
+                search();
+            }
+        }
+
+        function enter2() {
+            if (event.keyCode === 13) {
+                add();
+            }
+        }
+
+        function input_change() {
+            key = $("#key").val();
+            if (key === "") {
+                return false;
+            }
+            if(key.length>30){
+                return false;
+            }
+            var form = new FormData();
+            form.append("key", key);
+            form.append("limit", "10");
+            $.ajax({
+                url: "/api/study/dictionary/retrieval",
+                type: "post",
+                data: form,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                async: true,
+                success: function (data) {
+                    if (data==="0"){
+                        return;
+                    }
+                    $("#word_list").empty();
+                    var words = data.words;
+                    if (words.length !== 0) {
+                        words=words.slice(0,5);
+                        for (var i = 0; i < words.length; i++) {
+                            id = words[i].Id;
+                            key = words[i].Key_;
+                            value = words[i].Value_
+                            $("#word_list").append('<option value='+key+' label='+value+'></option>');
+                        }
+                    }
+                }
+            })
+        }
+
+
+        function add() {
+            key = $("#add_key").val();
+            value=$("#add_value").val();
+            if (key === "" || value ==="") {
+                alert('请填写完整！');
+                return false;
+            }
+            if(key.length>30){
+                alert('单词过长！');
+                return false;
+            }
+            if (value === "") {
+                alert('请填写完整！');
+                return false;
+            }
+            if(value.length>=200){
+                alert('单词过长！');
+                return false;
+            }
+
+            var form = new FormData();
+            form.append("key", key);
+            form.append("value", value);
+            form.append("key_type",'en');
+            form.append("value_type", 'zh');
+            $.ajax({
+                url: "/api/study/dictionary",
+                type: "post",
+                data: form,
+                //dataType: "json",
+                processData: false,
+                contentType: false,
+                async: true,
+                success: function (data) {
+                    if (data==="0"){
+                        alert('单词添加失败，请重试！');
+                    }
+                    else if (data==="-1"){
+                        alert('您尚未登录请先登录！');
+                        //window.location.href = "/login";
+                    }
+                    else{
+                        alert('单词添加成功！');
+                        $("#add_key").val("")
+                        $("#add_value").val("");
+                    }
+                }
+            })
+        }
+</script>
+
+<a class="" href="#top" id="rocket"></a>
+<script async="" src="/static/js/totop.js?v=1.0.0" type="text/javascript"></script>
+</body>
+
+</html>

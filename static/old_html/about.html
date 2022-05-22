@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="这是Ivan的个人博客，以Python、深度学习、数据分析为主">
+    <meta name="keywords" content="Ivan、个人博客、Python、深度学习、数据挖掘">
+    <link rel="shortcut icon" href="/static/photo/1.ico">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="/static/js/buttons.js"></script>
+    <title>
+          About - Ivan | Blog 
+    </title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/static/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/static/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/static/css/highlight.css">
+
+    <link rel="stylesheet" href="/static/css/widget.css">
+
+    <link rel="stylesheet" href="/static/css/rocket.css">
+
+    <link rel="stylesheet" href="/static/css/signature.css">
+
+    <link rel="stylesheet" href="/static/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+            background-image: url('/static/photo/about.jpg')
+            /*page*/
+    }
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="site-heading">
+                        <h1>About</h1>
+                        <!--<hr class="small">-->
+                        <span class="subheading">Talk is cheap,show me the code!</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ivan</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                        <li>
+                            <a href="/about">About</a>
+                        </li>
+
+                        <li>
+                            <a href="/archive">Archives</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/tags">Tags</a>
+                        </li>
+  
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+             <h3 id="一句话">一句话</h3>
+				<blockquote>
+					<p>标准的程序猿</p>
+				</blockquote>
+			<h3 id="名言">名言</h3>
+				<blockquote>
+					<p>如果每个人都能理解你，那你得普通成什么样子？</p>
+				</blockquote>
+			<h3 id="关于我">关于我</h3>
+				<blockquote>
+					<p>我是Ivan，是一名热爱技术、喜欢钻研、喜爱军事、航天</p>
+					<p>且爱动手的普通程序员</p>
+				</blockquote>
+			<h3 id="兴趣方向">兴趣方向</h3>
+				<blockquote>
+					<p>人工智能、深度学习、图像识别</p>
+					<p>Python、数据挖掘</p>
+					<p>Unity3D</p>
+					<p>网络安全</p>
+				</blockquote>
+			<h3 id="参与社区">参与社区</h3>
+				<blockquote>
+					<p>个人博客: <a href="http://www.ivana.work" target="_blank" rel="noopener">http://www.ivana.work</a></p>
+					<p>Github: <a href="https://github.com/ivanwhaf" target="_blank" rel="noopener">https://github.com/ivanwhaf</a></p>
+				</blockquote>
+			<h3 id="联系我">联系我</h3>
+				<blockquote>
+					<p>Email: <a href="javascript:void(0)" target="_blank" rel="noopener">ivanwyf@foxmail.com</a></p>
+				</blockquote>
+			<h3 id="微信公众号">微信公众号</h3>
+				<blockquote>
+					<p>微信搜索：嗷大喵zzz</p>
+				</blockquote>
+				<img src="/static/photo/qr.jpg" width="35%">
+
+
+                <br>
+
+            </div>
+
+          <!-- Sidebar Container -->
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+        <!-- Featured Tags -->
+
+<section>
+    <h5><a href="javascript:void(0)">FEATURED TAGS</a></h5>
+    <div class="tags">
+            <a href="javascript:void(0)">Python</a>
+            <a href="javascript:void(0)">Java</a>
+            <a href="javascript:void(0)">深度学习</a>
+            <a href="javascript:void(0)">人工智能</a>
+            <a href="javascript:void(0)">图像识别</a>
+			<a href="javascript:void(0)">Linux</a>
+            <a href="javascript:void(0)">Unity3D</a>
+			<a href="javascript:void(0)">数据分析</a>
+			<a href="javascript:void(0)">网络</a>
+    </div>
+</section>
+
+        <hr>
+    
+        <!-- Short About -->
+<section class="visible-md visible-lg">
+    <h5><a href="/about">ABOUT ME</a></h5>
+    <div class="short-about">
+        <img id="avatar_pic" src="/static/photo/me.jpg">
+        <p>人，终有一死</p>
+			
+        <ul class="list-inline">
+            <li>
+                <a target="_blank" href="https://github.com/ivanwhaf">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+            </li>
+			
+			<li>
+                <a target="_blank" href="https://weibo.com/u/2438209224">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+            </li>
+
+            <li>
+                <a target="_blank" href="https://www.zhihu.com/people/wu-yu-fan-66-20">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-stack-1x fa-inverse">知</i>
+                    </span>
+                <a>
+            </li>
+        </ul>
+		
+    </div>
+</section>
+     <hr>
+	 
+	 
+
+    
+    
+	</div>
+
+        
+    </div>
+</div>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                               
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/wu-yu-fan-66-20">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+               
+		
+					<li>
+                        <a target="_blank" href="https://weibo.com/u/2438209224">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-spinner fa-spin"><i class="fa fa-weibo fa-stack-1x fa-inverse"></i></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                    <li>
+                        <a target="_blank" href="https://github.com/ivanwhaf">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+				
+                <p class="copyright text-muted">
+                    Copyright © Ivan 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org/">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.ivana.work">Ivan</a>
+
+                    <br>
+                    苏ICP备19029983号             
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/static/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/static/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/static/js/toc.js?v=1.0.0" async=""></script>
+	
+</body>
+</html>

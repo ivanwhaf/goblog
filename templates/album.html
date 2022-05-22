@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Album - Ivan | Blog</title>
+    <link rel="stylesheet" href="/static/album/css/style.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/beantech.min.css">
+    <link rel="icon" href="/static/wallpaper/1.png" type="image/png"/>
+    <style>
+    .button_r {
+      display: inline-block;
+      border-radius: 10px;
+      background-color: #33cccc;
+      border: none;
+      color: #FFFFFF;
+      text-align: center;
+      font-size: 25px;
+      padding: 20px;
+      width: 140px;
+      transition: all 0.5s;
+      cursor: pointer;
+      margin: 5px;
+      opacity: 0.8;
+    }
+
+    .button_r span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+
+    .button_r span:after {
+      content: '»';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -20px;
+      transition: 0.5s;
+    }
+
+    .button_r:hover span {
+      padding-right: 20px;
+    }
+
+    .button_r:hover span:after {
+      opacity: 1;
+      right: 0;
+    }
+
+    /****************/
+    .button_l {
+      display: inline-block;
+      border-radius: 10px;
+      background-color: #33cccc;
+      border: none;
+      color: #FFFFFF;
+      text-align: center;
+      font-size: 25px;
+      padding: 20px;
+      width: 140px;
+      transition: all 0.5s;
+      cursor: pointer;
+      margin: 5px;
+      opacity: 0.8;
+    }
+
+    .button_l span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+
+    .button_l span:after {
+      content: '«';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      left: -20px;
+      transition: 0.5s;
+    }
+
+    .button_l:hover span {
+      padding-left: 20px;
+    }
+
+    .button_l:hover span:after {
+      opacity: 1;
+      left: 0;
+    }
+
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" href="/">Ivan's Blog</a>
+            <br>
+            <br>
+        </div>
+
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/archives">Archives</a>
+                    </li>
+
+                    <li>
+                        <a href="/tags">Tags</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<button id="id_btn_l" onclick="btn_l();" class="button_l" style="vertical-align:middle"><span>Previous</span></button>
+<div class="grid" id="grid">
+    {{ range $loop,$img:=.fileLst }}
+    {{ if le $loop 8 }}
+    <photo-card img="files/album/{{ $img }}" link="files/album/{{ $img }}"></photo-card>
+    {{ end }}
+    {{ end }}
+</div>
+<button id="id_btn_r" onclick="btn_r();" class="button_r" style="vertical-align:middle"><span>Next</span></button>
+
+<script type="text/javascript" src='/static/album/js/vue.min.js'></script>
+<script type="text/javascript" src="/static/album/js/script.js"></script>
+<script type="text/javascript">
+    var img_list = {{ .fileLst }}
+    var start = 0; var end = 0;
+    if (img_list.length < 8) {
+      end = img_list.length - 1;
+    } else {
+      end = 7;
+    }
+
+    function btn_l() {
+      if (start - 7 >= 0) {
+        if (end - start < 7) {
+          end = start - 1;
+          start = start - 8;
+        } else {
+          start = start - 8;
+          end = end - 8;
+        }
+
+        var grid = document.getElementById("grid");
+        for (var i = 0; i <= 7; i++) {
+          let a = grid.children[i];
+          a.setAttribute("href", "javascript:void(0);")
+          let img = a.children[1];
+          a.removeChild(img);
+          let img_new = document.createElement("img");
+          a.appendChild(img_new);
+        }
+
+        var grid = document.getElementById("grid");
+        for (var i = start, j = 0; j <= end - start; i++, j++) {
+          var a = grid.children[j];
+          a.setAttribute("href", "/album/" + img_list[i])
+          a.setAttribute("title", img_list[i])
+          var img = a.children[1];
+          img.setAttribute("src", "files/album/" + img_list[i])
+        }
+      } else {
+
+      }
+    }
+
+    function btn_r() {
+      if (start + 7 > img_list.length - 1) {
+        return;
+      }
+      if (end + 7 < img_list.length - 1) {
+        start = start + 8;
+        end = end + 8;
+      }
+      else {
+        if (start != end) {
+          start = end + 1;
+          end = img_list.length - 1;
+        }
+        else {
+          return;
+        }
+      }
+      alert("start:"+start+" end:"+end)
+
+      var grid = document.getElementById("grid");
+      for (var i = 0; i <= 7; i++) {
+        let a = grid.children[i];
+        a.setAttribute("href", "javascript:void(0);")
+        let img = a.children[1];
+        a.removeChild(img);
+        let img_new = document.createElement("img");
+        a.appendChild(img_new);
+      }
+
+      var grid = document.getElementById("grid");
+      for (var i = start, j = 0; j <= end - start; i++, j++) {
+        var a = grid.children[j];
+        a.setAttribute("href", "files/album/" + img_list[i])
+        a.setAttribute("title", img_list[i])
+        var img = a.children[1];
+        img.setAttribute("src", "files/album/" + img_list[i])
+      }
+    }
+
+</script>
+</body>
+
+</html>

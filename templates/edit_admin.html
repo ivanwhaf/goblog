@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/static/wallpaper/1.png">
+    <script async defer src="/static/js/buttons.js"></script>
+    <title>
+        Edit Admin - Ivan | Blog
+    </title>
+
+    <!-- Bootstrap Core CSS --><!---->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/static/css/donate.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/static/css/rocket.css">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        header.intro-header {
+            background-image: url('/static/wallpaper/add.jpg')
+                /*page*/
+        }
+    </style>
+</head>
+
+<body ontouchstart="">
+<!-- Post Header -->
+
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+                    <div class="site-heading">
+                        <h1>Edit Admin</h1>
+                        <span class="subheading"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ivan's Blog</a>
+        </div>
+
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {{ if .nickname }}
+                    <li>
+                        <a href="/admin/{{ .username }}" title="个人主页">{{ .nickname }}</a>
+                    </li>
+                    {{ end }}
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/archives">Archives</a>
+                    </li>
+
+                    <li>
+                        <a href="/tags">Tags</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        $toggle.addEventListener('click', handleMagic)
+        function handleMagic(e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                // CLOSE
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            } else {
+                // OPEN
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+
+</script>
+
+<div class="fh5co-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1 col-md-8 col-sm-8 col-xs-12">
+                <div class="col-md-25">
+                    <br>
+
+                    <form id="form" accept-charset="utf-8">
+                        <div class="form-group" hidden>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text" name="id" id="id" class="form-control" readonly
+                                           placeholder="id" style="height:40px;font-size:18px;" value="{{ .id }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text" name="username" id="username" class="form-control"
+                                           placeholder="用户名" style="height:40px;font-size:18px;" value="{{ .username }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text" name="password" id="password" class="form-control"
+                                           placeholder="密码" style="height:40px;font-size:18px;" value="{{ .password }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text" name="nickname" id="nickname" class="form-control"
+                                           placeholder="昵称" style="height:40px;font-size:18px;" value="{{ .nickname }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <select style="height:30px;width:150px" id="select_sex"
+                                            onchange="sex_option_change();">
+                                        {{ if eq .sex "男" }}
+                                        <option selected="selected">男</option>
+                                        <option>女</option>
+                                        {{ else }}
+                                        <option selected="selected">女</option>
+                                        <option>男</option>
+                                        {{ end }}
+                                    </select>
+                                    <input type="text" name="sex" readonly id="sex" class="form-control"
+                                           placeholder="性别" style="height:40px;font-size:18px;" value="{{ .sex }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <select style="height:30px;width:150px" id="select_authority"
+                                            onchange="authority_option_change();">
+                                        {{ if eq .authority 1 }}
+                                        <option selected="selected">1（最高等级）</option>
+                                        <option>2（普通管理员）</option>
+                                        <option>3（普通用户）</option>
+                                        {{ else if eq .authority 2 }}
+                                        <option selected="selected">2（普通管理员）</option>
+                                        <option>1（最高等级）</option>
+                                        <option>3（普通用户）</option>
+                                        {{ else }}
+                                        <option selected="selected">3（普通用户）</option>
+                                        <option>1（最高等级）</option>
+                                        <option>2（普通管理员）</option>
+                                        {{ end }}
+                                    </select>
+                                    <input type="text" name="authority" readonly id="authority" class="form-control"
+                                           placeholder="权限等级（1为最高等级，2为普通管理员，3为普通用户）"
+                                           style="height:40px;font-size:18px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="button" onclick="edit_admin();"
+                                           class="btn btn-primary btn-outline btn-lg btn-block" value="Submit">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/wu-yu-fan-66-20">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-stack-1x fa-inverse">知</i>
+                                </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a target="_blank" href="https://weibo.com/u/2438209224">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a target="_blank" href="https://github.com/ivanwhaf">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+
+                </ul>
+
+                <p class="copyright text-muted">
+                    Copyright © Ivan 2019-2022
+                    <br>
+                    Theme by <a href="http://beantech.org/">BeanTech</a>
+                    <span style="display: inline-block; margin: 0 5px;">
+                            <i class="fa fa-heart"></i>
+                        </span>
+                    re-Ported by <a href="http://www.ivana.work">Ivan</a> |
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                            width="100px" height="20px"
+                            src="//ghbtns.com/github-btn.html?user=ivanwhaf&repo=xxqg-helper&type=star&count=true"> >
+                    </iframe>
+                    <br>
+                    苏ICP备19029983号
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/static/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/hux-blog.min.js"></script>
+
+<script>
+        var select = document.getElementById('select_authority');
+        var options = select.options;
+        var authority = document.getElementById("authority");
+        authority.value = select.options[0].text.substring(0, 1);
+
+        var select = document.getElementById('select_sex');
+        var options = select.options;
+        var sex = document.getElementById("sex");
+        sex.value = select.options[0].text;
+
+        function edit_admin() {
+            id = $("#id").val();
+            username = $("#username").val();
+            password = $("#password").val();
+            nickname = $("#nickname").val();
+            sex = $("#sex").val();
+            authority = $("#authority").val();
+
+            if (username == "" || password == "" || nickname == "") {
+                alert("请填写完整信息!");
+                return false;
+            }
+            if (password.length<6){
+                alert("密码长度过短!");
+                return false;
+            }
+            var form = new FormData();
+            form.append("field", "all");
+            form.append("id", id);
+            form.append("username", username);
+            form.append("password", password);
+            form.append("nickname", nickname);
+            form.append("sex", sex);
+            form.append("authority", authority);
+            $.ajax({
+                url: "/api/admin",
+                type: "put",
+                data: form,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                async: true,
+                success: function (data) {
+                    if (data == 1) {
+                        alert('管理员账户修改成功!');
+                        window.location.href = "/manage";
+                    }
+                    else if (data == 0) {
+                        alert('管理员账户修改失败!');
+                    }
+                    else {
+                        var r = confirm("您尚未登录或权限不足，修改失败！");
+                        if (r != true) {
+                            return false;
+                        }
+                        window.location.href = "/manage";
+                    }
+                }
+            })
+        }
+
+        function sex_option_change() {
+            var s = document.getElementById("select_sex");
+            var options = s.options;
+            var i = s.selectedIndex;
+            var v = s.options[i].text;
+            document.getElementById("sex").value = v;
+            $("#sex").attr("readonly", "readonly");
+        }
+
+        function authority_option_change() {
+            var s = document.getElementById("select_authority");
+            var options = s.options;
+            var i = s.selectedIndex;
+            var v = s.options[i].text.substring(0, 1);
+            document.getElementById("authority").value = v;
+            $("#authority").attr("readonly", "readonly");
+        }
+</script>
+
+<a id="rocket" href="#top" class=""></a>
+<script type="text/javascript" src="/static/js/totop.js?v=1.0.0" async=""></script>
+</body>
+
+</html>

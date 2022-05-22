@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/static/wallpaper/1.png" type="image/png"/>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="/static/js/buttons.js"></script>
+    <title>
+        About - Ivan | Blog
+    </title>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/static/css/donate.css">
+
+    <!-- Pygments Highlight CSS -->
+    <!--
+    <link rel="stylesheet" href="/static/css/highlight.css">
+    <link rel="stylesheet" href="/static/css/widget.css">
+    <link rel="stylesheet" href="/static/css/signature.css">
+    <link rel="stylesheet" href="/static/css/toc.css">
+    -->
+    <link rel="stylesheet" href="/static/css/rocket.css">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        header.intro-header {
+            background-image: url('/static/wallpaper/about.jpg')
+                /*page*/
+        }
+    </style>
+</head>
+
+<body ontouchstart="">
+<!-- Post Header -->
+
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+                    <div class="site-heading">
+                        <h1>About</h1>
+                        <!--<hr class="small">-->
+                        <span class="subheading">Talk is cheap,show me the code!</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ivan's Blog</a>
+        </div>
+
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {{ if .nickname }}
+                    <li>
+                        <a href="/admin/{{ .username }}" title="个人主页">{{ .nickname }}</a>
+                    </li>
+                    {{ end }}
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/archives">Archives</a>
+                    </li>
+
+                    <li>
+                        <a href="/tags">Tags</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        $toggle.addEventListener('click', handleMagic)
+        function handleMagic(e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                // CLOSE
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            } else {
+                // OPEN
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+</script>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <!-- Post Container -->
+        <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            <h3 id="一句话">一句话</h3>
+            <blockquote>
+                <p>Just a coder.</p>
+            </blockquote>
+            <h3 id="名言">名言</h3>
+            <blockquote>
+                <p>我们的征途是星辰大海！</p>
+            </blockquote>
+            <h3 id="关于我">关于我</h3>
+            <blockquote>
+                <p>一名热爱技术、喜爱钻研，对军事、航天敢兴趣</p>
+                <p>以及爱动手的社畜💻</p>
+            </blockquote>
+            <h3 id="兴趣及研究方向">兴趣方向</h3>
+            <blockquote>
+                <p>人工智能、机器学习、深度学习、图像识别</p>
+                <p>Active Learning、Noisy Label、Class Imbalanced Learning、SSL Learning</p>
+                <p>数据分析</p>
+                <p>Unity3D</p>
+            </blockquote>
+            <h3 id="参与社区">参与社区</h3>
+            <blockquote>
+                <p>个人博客: <a href="http://www.ivana.work" target="_blank" rel="noopener">http://www.ivana.work</a>
+                </p>
+                <p>Github: <a href="https://github.com/ivanwhaf" target="_blank"
+                              rel="noopener">https://github.com/ivanwhaf</a></p>
+            </blockquote>
+            <!--            <h3 id="联系我">联系我</h3>-->
+            <!--            <blockquote>-->
+            <!--                <p>Email: <a href="javascript:void(0)" target="_blank" rel="noopener">ivanwyf@foxmail.com</a></p>-->
+            <!--            </blockquote>-->
+            <!--
+            <h3 id="微信公众号">微信公众号</h3>
+            <blockquote>
+                <p>微信搜索：嗷大喵zzz</p>
+            </blockquote>
+            <img src="/static/wallpaper/qr.jpg" width="35%">
+            -->
+            <br>
+        </div>
+
+        <!-- Sidebar Container -->
+        <div class="
+            col-lg-3 col-lg-offset-0
+            col-md-3 col-md-offset-0
+            col-sm-12
+            col-xs-12
+            sidebar-container
+            ">
+            <!-- Featured Tags -->
+            <section>
+                <h5><a href="javascript:void(0)">FEATURED TAGS</a></h5>
+                <div class="tags">
+                    <a href="javascript:void(0)">AI</a>
+                    <a href="javascript:void(0)">机器学习</a>
+                    <a href="javascript:void(0)">深度学习</a>
+                    <a href="javascript:void(0)">主动学习</a>
+                    <a href="javascript:void(0)">半监督学习</a>
+                    <a href="javascript:void(0)">CV</a>
+                    <a href="javascript:void(0)">数据分析</a>
+                    <a href="javascript:void(0)">物联网</a>
+                    <a href="javascript:void(0)">机器人</a>
+                    <a href="javascript:void(0)">Unity3D</a>
+                    <a href="javascript:void(0)">Linux</a>
+                    <a href="javascript:void(0)">网络安全</a>
+                    <a href="javascript:void(0)">Python</a>
+                    <a href="javascript:void(0)">Java</a>
+                    <a href="javascript:void(0)">C++</a>
+                </div>
+            </section>
+            <hr>
+
+            <!-- Short About -->
+            <section class="visible-md visible-lg">
+                <h5><a href="/about">ABOUT ME</a></h5>
+                <div class="short-about">
+                    <img id="avatar_pic" src="/static/wallpaper/me.jpg">
+                    <p>人，终有一死</p>
+
+                    <ul class="list-inline">
+                        <li>
+                            <a target="_blank" href="https://github.com/ivanwhaf">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a target="_blank" href="javascript:void(0);">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                    </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a target="_blank" href="javascript:void(0);">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-stack-1x fa-inverse">知</i>
+                                    </span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </section>
+            <hr>
+        </div>
+
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="javascript:void(0);">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-stack-1x fa-inverse">知</i>
+                                </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://github.com/ivanwhaf">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+                </ul>
+
+                <p class="copyright text-muted">
+                    Copyright © Ivan 2019-2022
+                    <br>
+                    Theme by <a href="http://beantech.org/">BeanTech</a>
+                    <span style="display: inline-block; margin: 0 5px;">
+                            <i class="fa fa-heart"></i>
+                        </span>
+                    re-Ported by <a href="http://www.ivana.work">Ivan</a> |
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                            width="100px" height="20px"
+                            src="//ghbtns.com/github-btn.html?user=ivanwhaf&repo=xxqg-helper&type=star&count=true">
+                    </iframe>
+                    <br>
+                    苏ICP备19029983号
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/static/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/hux-blog.min.js"></script>
+
+<!-- async load function -->
+<script>
+        function async(u, c) {
+            var d = document, t = 'script',
+                o = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+            o.src = u;
+            if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+            s.parentNode.insertBefore(o, s);
+        }
+</script>
+
+<!--fastClick.js -->
+<script>
+        async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+            var $nav = document.querySelector("nav");
+            if ($nav) FastClick.attach($nav);
+        })
+</script>
+
+<a id="rocket" href="#top" class=""></a>
+<script type="text/javascript" src="/static/js/totop.js?v=1.0.0" async=""></script>
+</body>
+
+</html>

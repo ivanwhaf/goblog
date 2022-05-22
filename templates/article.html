@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ .Tag }}-{{ .Title }}">
+    <!-- Place this tag in your head or just before your close body tag. -->
+
+    <link rel="shortcut icon" href="/static/wallpaper/1.png">
+
+    <script async defer src="/static/js/buttons.js"></script>
+
+    <title id="title">
+        {{ .Title }}
+    </title>
+    <link rel="canonical" href="/index">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/beantech.min.css">
+    <link rel="stylesheet" href="/static/css/donate.css">
+
+    <!-- Pygments Highlight CSS -->
+    <!--
+    <link rel="stylesheet" href="/static/css/highlight.css">
+    <link rel="stylesheet" href="/static/css/widget.css">
+    <link rel="stylesheet" href="/static/css/signature.css">
+    <link rel="stylesheet" href="/static/css/toc.css">
+    -->
+    <link rel="stylesheet" href="/static/css/rocket.css">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!--
+	<link rel="stylesheet" href="/static/css/emacs.css">
+    <link rel="stylesheet" href="/static/css/native.css">
+    <link rel="stylesheet" href="/static/css/trac.css">
+    <link rel="stylesheet" href="/static/css/momokai.css">
+    <link rel="stylesheet" href="/static/css/code.css">
+    <link rel="stylesheet" href="/static/css/fruity.css">
+    -->
+
+    <link rel="stylesheet" href="/static/css/editormd.preview.min.css">
+
+    <style>
+        .commentbox {
+            width: 550px;
+            margin: 20px auto;
+        }
+
+        .mytextarea {
+            width: 100%;
+            overflow: auto;
+            word-break: break-all;
+            height: 120px;
+            color: #000;
+            font-size: 1em;
+            resize: none;
+            border: solid 2px #ccc;
+        }
+
+        .mytextarea_email {
+            width: 100%;
+            overflow: auto;
+            word-break: break-all;
+            height: 70px;
+            color: #000;
+            font-size: 1em;
+            resize: none;
+            border: solid 2px #ccc;
+        }
+
+        .comment-list {
+            width: 590px;
+            margin: 20px auto;
+            clear: both;
+            padding-top: 20px;
+            float: left;
+        }
+
+        .comment-list .comment-info {
+            position: relative;
+            margin-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .comment-list .comment-info header {
+            width: 10%;
+            position: absolute;
+        }
+
+        .comment-list .comment-info header img {
+            width: 100%;
+            border-radius: 50%;
+            padding: 5px;
+        }
+
+        .comment-list .comment-info .comment-right {
+            padding: 30px 0px 5px 11%;
+        }
+
+        .comment-list .content {
+            margin-bottom: 10px;
+        }
+
+        .comment-list .comment-info .comment-right h3 {
+            margin: 5px 0px;
+        }
+
+        .comment-list .comment-info .comment-right .comment-content-header {
+            height: 0px;
+        }
+
+        .comment-list .comment-info .comment-right .comment-content-header span,
+        .comment-list .comment-info .comment-right .comment-content-footer span {
+            padding-right: 2em;
+            color: #aaa;
+        }
+
+        .comment-list .comment-info .comment-right .comment-content-header span,
+        .comment-list .comment-info .comment-right .comment-content-footer span.reply-btn,
+        .send,
+        .reply-list-btn {
+            cursor: pointer;
+        }
+
+        .comment-list .comment-info .comment-right .reply-list {
+            border-left: 3px solid #ccc;
+            padding-left: 7px;
+        }
+
+        .comment-list .comment-info .comment-right .reply-list .reply {
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .comment-list .comment-info .comment-right .reply-list .reply div span {
+            padding-left: 10px;
+        }
+
+        .comment-list .comment-info .comment-right .reply-list .reply p span {
+            padding-right: 2em;
+            color: #aaa;
+        }
+    </style>
+    <style type="text/css">
+        header.intro-header {
+            background-image: url('/static/wallpaper/article3.jpg')
+            /*post*/
+        }
+    </style>
+</head>
+
+<body ontouchstart="">
+
+<!-- Post Header -->
+
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+                    <div class="post-heading">
+                        <div class="tags" id="ta1">
+                            <a class="tag" href="/tags#{{ .tag }}">{{ .tag }}</a>
+                        </div>
+                        <h1 id="t1">{{ .title }}</h1>
+                        <h2 id="st1" class="subheading">{{ .subtitle }}</h2>
+                        <span class="meta" id="d1">
+                                Posted by {{ .author }} on {{ .createDate }}
+                            </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ivan's Blog</a>
+        </div>
+
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {{ if .nickname }}
+                    <li>
+                        <a href="/admin/{{ .username }}"
+                           title="个人主页">{{ .nickname }}</a>
+                    </li>
+                    {{ end }}
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/archives">Archives</a>
+                    </li>
+
+                    <li>
+                        <a href="/tags">Tags</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+
+    function handleMagic(e) {
+        if ($navbar.className.indexOf('in') > 0) {
+            // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function () {
+                // prevent frequently toggle
+                if ($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            }, 400)
+        } else {
+            // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="
+            col-lg-9 col-lg-offset-1
+            col-md-9 col-md-offset-1
+            post-container" id="essay">
+
+                <h1 id="t2"></h1>
+
+                <div class="post-content-preview" id="post-content-preview">&emsp;&nbsp;浏览量：{{ .readCount }}
+                    &emsp;最近编辑于：{{ .lastEditDate }}
+                </div>
+                <br>
+
+                <div style="display:none;" id="c">{{ .contentMd }}</div>
+
+                <div id="content-editormd" style="font-size:16px">
+
+                </div>
+
+                <br>
+                <hr>
+
+                <ul class="pager">
+                    {{ if ne .previousId "" }}
+                    <li class="previous"><a href="/article/{{ .previousTag }}/{{ .previousId }}"
+                                            data-toggle="tooltip" data-placement="top"
+                                            title="{{ .previousTagTitle }}">&larr;
+                        Previous Post</a></li>
+                    {{ end }}
+
+                    {{ if ne .nextId "" }}
+                    <li class="next"><a href="/article/{{ .nextTag }}/{{ .nextId }}" data-toggle="tooltip"
+                                        data-placement="top" title="{{ .nextTagTitle }}">Next Post &rarr;</a></li>
+                    {{ end }}
+                </ul>
+                <br><br><br><br>
+
+                <!--分享-->
+                <div class="social-share" data-wechat-qrcode-helper="" style="text-align:center"></div>
+                <link rel="stylesheet"
+                      href="/static/css/share.min.css">
+                <script
+                        src="/static/js/social-share.min.js"></script>
+                <br>
+
+                <textarea cols="80" rows="50" placeholder="来说几句吧......" class="mytextarea" id="content"></textarea>
+                {{ if .nickname }}
+                <textarea cols="30" rows="30" placeholder="Email/联系方式/姓名（已登录不填）" class="mytextarea_email"
+                          id="email" disabled="disabled"></textarea>
+                {{ else }}
+                <textarea cols="30" rows="30" placeholder="Email/联系方式/姓名" class="mytextarea_email"
+                          id="email"></textarea>
+                {{ end }}
+                <div class="btn btn-info pull-right" style="width:100px;" id="comment">评论</div>
+
+                <div class="comment-list"></div>
+            </div>
+
+            <style>
+                span.toc-nav-number {
+                    display: none
+                }
+            </style>
+
+            <!-- Sidebar Container -->
+            <aside id="sidebar">
+                <div id="toc" class="toc-article">
+                    <br><br><br>
+                    <strong class="toc-title">Contents</strong>
+
+
+                    <ol class="toc-nav" id='ol'>
+                        <!--
+                    <li class="toc-nav-item toc-nav-level-1">
+                    <a class="toc-nav-link" href="#t2">
+                    <span class="toc-nav-text">{{ .title }}</span>
+                    </a>
+                     </li>
+                    -->
+                        {{ range $h1:=.titleNodeLst }}
+                        <li class="toc-nav-item toc-nav-level-1">
+                            <a class="toc-nav-link" href="#{{ $h1.Id }}">
+                                <span class="toc-nav-text">{{ $h1.S }}</span>
+                            </a>
+
+<!--                            {{ if $h1.Children }}-->
+                            <ol class="toc-nav-child">
+                                {{ range $h2:=$h1.Children }}
+                                <li class="toc-nav-item toc-nav-level-2">
+                                    <a class="toc-nav-link" href="#{{ $h2.Id }}">
+                                        <span class="toc-nav-text">{{ $h2.S }}</span>
+                                    </a>
+                                </li>
+                                {{ end }}
+                                <ol>
+<!--                                    {{ end }}-->
+                                    </li>
+                                    {{ end }}
+                                </ol>
+                            </ol>
+                    </ol>
+                </div>
+            </aside>
+
+        </div><!-- row-->
+
+    </div><!-- container -->
+
+</article>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function (e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js", function () {
+        anchors.options = {
+            visible: 'hover',
+            placement: 'left',
+            icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+
+
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link {
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top: -0.1em;
+        }
+    }
+</style>
+
+<!-- chrome Firefox 中文锚点定位失效 -->
+<!--
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+    $('#toc').on('click', 'a', function (a) {
+        // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+        // console.log(window.navigator.userAgent,isChrome)
+        // if(isChrome) {
+        // console.log(a.currentTarget.outerHTML);
+        // console.log($(a.currentTarget).attr("href"));
+        //跳转到指定锚点
+        // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+        document.getElementById($(a.currentTarget).attr("href").replace("#", "")).scrollIntoView({ behavior: 'smooth' });
+        // }
+    })
+</script>
+-->
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                    <li>
+                        <a href="javascript:void(0);">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-stack-1x fa-inverse">知</i>
+                                </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="javascript:void(0);">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a target="_blank" href="https://github.com/ivanwhaf">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+
+                </ul>
+
+                <p class="copyright text-muted">
+                    Copyright © Ivan 2019-2022
+                    <br>
+                    Theme by <a href="http://beantech.org/">BeanTech</a>
+                    <span style="display: inline-block; margin: 0 5px;">
+                            <i class="fa fa-heart"></i>
+                        </span>
+                    re-Ported by <a href="http://www.ivana.work">Ivan</a> |
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                            width="100px" height="20px"
+                            src="//ghbtns.com/github-btn.html?user=ivanwhaf&repo=xxqg-helper&type=star&count=true"> >
+                    </iframe>
+
+                    <br>
+                    苏ICP备19029983号
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/static/js/jquery.min.js"></script>
+
+<script src="/static/lib/marked.min.js"></script>
+<script src="/static/lib/prettify.min.js"></script>
+<script src="/static/lib/raphael.min.js"></script>
+<script src="/static/lib/underscore.min.js"></script>
+<script src="/static/lib/sequence-diagram.min.js"></script>
+<script src="/static/lib/flowchart.min.js"></script>
+<script src="/static/lib/jquery.flowchart.min.js"></script>
+<script src="/static/js/editormd.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/hux-blog.min.js"></script>
+
+<script type="text/javascript" src="/static/js/jquery.comment.js"></script>
+
+<script>
+    var c = $("#c").text(); //must be text() not html()
+    testEditor = editormd.markdownToHTML("content-editormd", {
+        //width: "100%",
+        //height: 740,
+        markdown: c,
+        htmlDecode: "style,script,iframe",
+        tocm: true,
+        emoji: true,
+        taskList: true,
+        tex: true,  // 默认不解析
+        flowChart: true,  // 默认不解析
+        sequenceDiagram: true  // 默认不解析
+    });
+</script>
+
+<script>
+    function htmlEncode(str) {
+        var div = document.createElement('div');
+        if (div.innerText) {
+            div.innerText = str;
+        } else {
+            div.textContent = str;//Support firefox
+        }
+        return div.innerHTML;
+    }
+</script>
+
+<script type="text/javascript">
+    var pathname = window.location.pathname;
+    var pn = pathname.split("/");
+    id = pn[3];
+    var comments = {{ .comments }};
+
+    $(".comment-list").addCommentList({data: comments, add: ""});
+
+    $("#comment").click(function () {
+        content = $("#content").val();
+        email = $("#email").val();
+        if (content == "") {
+            alert("评论不能为空！");
+            return;
+        }
+        //content=encodeURI(content);
+        //content=htmlEncode(content);
+        var form = new FormData();
+        form.append("article_id", id);
+        form.append("content", content);
+        form.append("email", email);
+
+        $.ajax({
+            url: "/api/comments",
+            type: "post",
+            data: form,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            async: false,
+            success: function (data) {
+                if (data == 1) {
+                    alert('评论成功!');
+                    window.location.reload();
+                } else if (data == 0) {
+                    alert('评论失败!请检查格式是否正确，是否漏填！');
+                } else if (data == 2) {
+                    alert('您评论过于频繁，请稍后再试！');
+                }
+            }
+        });
+    });
+</script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function (e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+<a id="rocket" href="/#top" class=""></a>
+<script type="text/javascript" src="/static/js/totop.js?v=1.0.0" async=""></script>
+<!--
+<script type="text/javascript" src="/static/js/toc.js?v=1.0.0" async=""></script>
+-->
+</body>
+</html>

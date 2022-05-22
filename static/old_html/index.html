@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="baidu_union_verify" content="c473ddba0eb7b759f6551f311f22131d">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="这是Ivan的个人博客，以Python、深度学习、数据分析为主">
+    <meta name="keywords" content="Ivan、个人博客、Python、深度学习、数据挖掘">
+	<meta name="robots"content="all">
+    <!-- Place this tag in your head or just before your close body tag. -->
+	<!--
+    <script src="/static/js/hm.js"></script>
+	-->
+	<!--
+	<script async="" src="/static/js/analytics.js"></script>
+	-->
+	<script src="/static/js/fastclick.min.js"></script>
+	<script async="" defer="" src="/static/js/buttons.js"></script>
+    <title>
+          Ivan | Blog
+    </title>
+	<!--
+	<link rel="shortcut icon" href="/static/wallpaper/1.ico">
+	-->
+
+	<link rel="icon" href="/static/photo/1.ico" type="image/x-icon"/>
+
+    <link rel="canonical" href="http://www.ivana.work">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/static/css/beantech.min.css">
+    <link rel="stylesheet" href="/static/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/static/css/highlight.css">
+    <link rel="stylesheet" href="/static/css/widget.css">
+    <link rel="stylesheet" href="/static/css/rocket.css">
+    <link rel="stylesheet" href="/static/css/signature.css">
+    <link rel="stylesheet" href="/static/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- ga & ba script hoook -->
+
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+            background-image: url('/static/photo/home.jpg') 
+            /*config*/
+    } 
+</style>
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="site-heading">
+                        <h1>Ivan</h1>
+                        <span class="subheading">个人博客</span>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" href="/">Ivan</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    <li>
+						<a href="/about">About</a>
+                    </li>
+   
+                    <li>
+                        <a href="/archive">Archives</a>
+                    </li>
+                            
+                    <li>
+                        <a href="/tags">Tags</a>
+                    </li>                         
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+<!-- Main Content -->
+<div class="container">
+	<div class="row">
+
+    <!-- Post Container -->
+        <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container" id="essay">
+
+            
+		</div>
+
+
+
+<!-- Sidebar Container -->
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container">
+    
+<section>
+    <h5><a href="javascript:void(0)">FEATURED TAGS</a></h5>
+    <div class="tags">
+            <a href="javascript:void(0)">Python</a>
+            <a href="javascript:void(0)">Java</a>
+            <a href="javascript:void(0)">深度学习</a>
+            <a href="javascript:void(0)">人工智能</a>
+            <a href="javascript:void(0)">图像识别</a>
+			<a href="javascript:void(0)">Linux</a>
+            <a href="javascript:void(0)">Unity3D</a>
+			<a href="javascript:void(0)">数据分析</a>
+			<a href="javascript:void(0)">网络</a>
+    </div>
+</section>
+<hr>
+
+<section class="visible-md visible-lg">
+    <h5><a href="/about">ABOUT ME</a></h5>
+    <div class="short-about">
+        <img id="avatar_pic" src="./static/photo/me.jpg">
+        <p>人，终有一死</p>
+			
+        <ul class="list-inline">
+            <li>
+                <a target="_blank" href="https://github.com/ivanwhaf">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+            </li>
+			
+			<li>
+                <a target="_blank" href="https://weibo.com/u/2438209224">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+            </li>
+
+            <li>
+                <a target="_blank" href="https://www.zhihu.com/people/wu-yu-fan-66-20">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-stack-1x fa-inverse">知</i>
+                    </span>
+                <a>
+            </li>
+			
+        </ul>
+		
+    </div>
+</section>
+<hr>
+
+<h5><a href="javascript:void(0)">POPULAR POSTS</a></h5>
+	<ul class="list-inline" id="popular">
+
+	</ul>
+
+<hr>
+
+<h5><a href="javascript:void(0)">FUNCTIONS</a></h5>
+	<ul class="list-inline">
+		<li><a href="/upload">文件上传</a></li>
+		<li><a href="/list">博客管理</a></li>
+		<li><a href="/login">登录</a></li>
+	</ul>
+   <hr>
+</div>
+</div>
+
+<div class="post-content-preview" id="vc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;浏览量：</div> 
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                               
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/wu-yu-fan-66-20">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+               
+		
+					<li>
+                        <a target="_blank" href="https://weibo.com/u/2438209224">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-spinner fa-spin"><i class="fa fa-weibo fa-stack-1x fa-inverse"></i></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                    <li>
+                        <a target="_blank" href="https://github.com/ivanwhaf">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+				
+                <p class="copyright text-muted">
+                    Copyright © Ivan 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org/">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.ivana.work">Ivan</a>
+
+                    <br>
+                    苏ICP备19029983号          
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/static/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/static/js/hux-blog.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+-->
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<script>
+	function get_article_preview()
+	{
+		var pathname=window.location.pathname;
+		var pn=pathname.split("/");
+		var page=pn[1];
+
+		if(page=="")
+		{
+			page=1;
+		}
+
+		$.ajax(
+				{
+					method:'GET',
+					url:'/get_article_preview?page='+page,
+					dataType:'json',
+					success:function(data)
+						{
+							var total_count=parseInt(data.total_count);
+							var visitor_count=data.visitor_count;
+							var popular=data.popular;
+							
+							for(var i=0;i<popular.length;i++)
+							{
+								id=popular[i].id;
+								tag=popular[i].tag;	
+								title=popular[i].title;	
+								read_count=popular[i].read_count;
+								$("#popular").append('<li><a href="/article/'+tag+'/'+id+'">'+title+' ('+read_count+')</a></li><br>');
+							}
+							var data=data.data;
+							$("#vc").append(visitor_count);
+							for(var i=0;i<data.length;i++)
+							{
+								id=data[i].id;
+								title=data[i].title;
+								subtitle=data[i].subtitle;
+								tag=data[i].tag;
+								content=data[i].content;
+								date=data[i].date;
+								$("#essay").append(
+								'<div class="post-preview">\n'+
+								'	<a href="article/'+tag+'/'+id+'">\n'+
+								'		<h2 class="post-title">['+tag+'] '+title+'</h2>\n'+
+								'		<h3 class="post-subtitle">'+subtitle+'</h3>\n'+
+								'		<div class="post-content-preview">'+content+'</div>\n'+
+								'	</a>\n'+
+								'	<p class="post-meta" style="margin: 10px 0;">Posted by Ivan on '+date+'</p>\n'+
+								'	<div class="tags"><a href="/tags#'+tag+'">'+tag+'</a>\n</div>\n'+
+								'</div>'+
+								'<hr>');
+							}
+							$("#essay").append('<ul class="pager" id="pa"></ul><br>');
+							page=parseInt(page);
+							if(page!=1)
+							{
+								$("#pa").append('<li class="previous">'+
+									'<a href="/'+(page-1).toString()+'">&larr; Newer Posts</a>'+
+								'</li>');
+							}
+							if(page*10<total_count)
+							{
+								$("#pa").append('<li class="next">'+
+									'<a href="/'+(page+1).toString()+'">Older Posts →</a>'+
+								'</li>');
+							}
+							
+						}
+				}
+		);
+	}
+	$(document).ready(get_article_preview());
+</script>
+
+<a id="rocket" href="/#top" class=""></a>
+<script type="text/javascript" src="/static/js/totop.js" async=""></script>
+<script type="text/javascript" src="/static/js/toc.js" async=""></script>
+
+</body>
+</html>

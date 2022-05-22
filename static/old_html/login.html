@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="这是Ivan的个人博客，以Python、深度学习、数据分析为主">
+    <meta name="keywords" content="Ivan、个人博客、Python、深度学习、数据挖掘">
+    <link rel="shortcut icon" href="/static/photo/1.ico">
+    <script async defer src="/static/js/buttons.js"></script>
+    <title>
+          Login - Ivan | Blog 
+    </title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/static/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/static/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/static/css/highlight.css">
+
+    <link rel="stylesheet" href="/static/css/widget.css">
+
+    <link rel="stylesheet" href="/static/css/rocket.css">
+
+    <link rel="stylesheet" href="/static/css/signature.css">
+
+    <link rel="stylesheet" href="/static/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	<link rel="stylesheet" href="/static/admin/css/css.css">
+	<!-- Animate.css -->
+
+
+	<!-- Bootstrap  -->
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="/static/admin/css/style.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+	<script>
+	function login()
+	{
+		if($("#username").val()=="" || $("#password").val()=="")
+		{
+			alert("请填写完整登录信息!");
+			return false;
+		}
+		username=$("#username").val();
+		password=$("#password").val();
+		var form = new FormData();
+		form.append("username",username);
+		form.append("password",password);
+		$.ajax({
+			url: "/login_certificate",
+			type: "post",
+			data: form,
+			dataType: "json",
+			processData: false,
+			contentType: false,
+			async: false,
+			success: function (data) {
+				if(data==1)
+				{
+					alert('登录成功!');
+					window.location.href="/";
+				}
+				else if(data==0)
+				{
+					alert('密码错误!');
+				}
+				else if(data==-1)
+				{
+					alert('账户不存在!');
+				}
+			}
+		})
+	}
+</script>
+
+
+</head>
+
+
+
+<body ontouchstart="">
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+            background-image: url('/static/photo/login.jpg')
+            /*page*/
+    }
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="site-heading">
+                        <h1>Login</h1>
+						<span class="subheading"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ivan</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                        <li>
+                            <a href="/about">About</a>
+                        </li>
+
+                        <li>
+                            <a href="/archive">Archives</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/tags">Tags</a>
+                        </li>
+  
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+		<div class="fh5co-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-11 col-md-8 col-sm-8 col-xs-12">
+						<div class="col-md-25">
+					
+							<form id="form" accept-charset="utf-8">
+							
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-8">
+											<input type="text" name="username" id="username" class="form-control" placeholder="用户名">		
+										</div>
+									</div>
+								</div>
+								<br>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-8">
+											<input type="text" name="password" id="password" class="form-control" placeholder="密码">		
+										</div>
+									</div>
+								</div>
+								<br>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-md-4">
+											<input type="button" id="login_button" onclick="login();" class="btn btn-primary btn-outline btn-lg btn-block" value="登录">
+										</div>
+									</div>
+								</div>
+
+							</form>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                               
+                     <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/wu-yu-fan-66-20">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+               
+		
+					<li>
+                        <a target="_blank" href="https://weibo.com/u/2438209224">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-spinner fa-spin"><i class="fa fa-weibo fa-stack-1x fa-inverse"></i></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                    <li>
+                        <a target="_blank" href="https://github.com/ivanwhaf">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+				
+                <p class="copyright text-muted">
+                    Copyright © Ivan 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org/">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.ivana.work">Ivan</a>
+
+                    <br>
+                    苏ICP备19029983号             
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/static/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/hux-blog.min.js"></script>
+
+<script>
+$("textarea").on('keydown',function(e){
+    if(e.keyCode == 9){
+        e.preventDefault();
+        var indent = '    ';
+        var start = this.selectionStart;
+        var end = this.selectionEnd;
+        var selected = window.getSelection().toString();
+        selected = indent + selected.replace(/\n/g,'\n'+indent);
+        this.value = this.value.substring(0,start) + selected + this.value.substring(end);
+        this.setSelectionRange(start+indent.length,start+selected.length);
+    }
+})
+</script>
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/static/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/static/js/toc.js?v=1.0.0" async=""></script>
+
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/static/wallpaper/1.png">
+    <script async defer src="/static/js/buttons.js"></script>
+    <title>
+        FULL TEXT SEARCH - Ivan | Blog
+    </title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/beantech.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/static/css/rocket.css">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        header.intro-header {
+            background-image: url('/static/wallpaper/add.jpg')
+                /*page*/
+        }
+    </style>
+</head>
+
+<body ontouchstart="">
+<!-- Post Header -->
+
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+
+                    <div class="site-heading">
+                        <h1>FULL TEXT SEARCH</h1>
+                        <span class="subheading">全文搜索</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ivan's Blog</a>
+        </div>
+
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+
+                    <li>
+                        <a href="/archives">Archives</a>
+                    </li>
+
+                    <li>
+                        <a href="/tags">Tags</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+        $toggle.addEventListener('click', handleMagic)
+        function handleMagic(e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                // CLOSE
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            } else {
+                // OPEN
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+</script>
+
+<div class="fh5co-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+                <div class="col-md-25">
+                    <br>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-7 col-md-7">
+                                <input type="text" name="keyword" id="keyword" class="form-control"
+                                       placeholder="请输入要搜索的关键词" onkeydown="enter();"
+                                       style="height:55px;font-size:18px;">
+                            </div>
+
+                            <div class="col-lg-5 col-md-5">
+                                <input type="button" onclick="search();" id="search_button" class="btn btn-primary"
+                                       value="Search" style="width:120px">
+                            </div>
+                        </div>
+                    </div>
+
+                    匹配的文章标题：
+                    <div id="data_title">
+                    </div>
+                    <br>
+                    <hr>
+
+                    匹配的文章内容：
+                    <div id="data_content">
+                    </div>
+                    <br>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/wu-yu-fan-66-20">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-stack-1x fa-inverse">知</i>
+                                </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://weibo.com/u/2438209224">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://github.com/ivanwhaf">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright © Ivan 2019-2022
+                    <br>
+                    Theme by <a href="http://beantech.org/">BeanTech</a>
+                    <span style="display: inline-block; margin: 0 5px;">
+                            <i class="fa fa-heart"></i>
+                        </span>
+                    re-Ported by <a href="http://www.ivana.work">Ivan</a> |
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                            width="100px" height="20px" allowtransparency="true"
+                            src="//ghbtns.com/github-btn.html?user=ivanwhaf&repo=xxqg-helper&type=star&count=true">
+                    </iframe>
+                    <br>
+                    苏ICP备19029983号
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/static/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/hux-blog.min.js"></script>
+
+<script>
+        $("#keyword").focus();
+        function search() {
+            keyword = $("#keyword").val();
+            if (keyword === "") {
+                return false;
+            }
+            if(keyword.length>30){
+                alert('关键词过长！');
+                return false;
+            }
+            var form = new FormData();
+            form.append("keyword", keyword);
+            $.ajax({
+                url: "/api/article/retrieval",
+                type: "post",
+                data: form,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                async: true,
+                success: function (data) {
+                    if (data==='0'){
+                        alert('您搜索的频率过快！请稍后再试！');
+                        return;
+                    }
+                    $("#data_title").empty();
+                    $("#data_content").empty();
+
+                    var articles_content = data.articlesContent;
+                    var articles_title = data.articlesTitle;
+
+                    if (articles_title.length == 0) {
+                        $("#data_title").append('<div class="post-content-preview"><未找到相关文章></div>');
+                    }
+                    if (articles_content.length == 0) {
+                        $("#data_content").append('<div class="post-content-preview"><未找到相关文章></div>');
+                    }
+                    for (var i = 0; i < articles_title.length; i++) {
+                        id = articles_title[i].Id;
+                        title = articles_title[i].Title;
+                        tag = articles_title[i].Tag;
+                        $("#data_title").append(
+                            '<div class="post-preview">\n' +
+                            '<a href="/article/' + tag + '/' + id + '" target="_blank">\n' +
+                            '  <h2 class="post-title">[' + tag + '] ' + title + '</h2>' +
+                            '</a></div>');
+                    }
+                    for (var i = 0; i < articles_content.length; i++) {
+                        id = articles_content[i].Id;
+                        title = articles_content[i].Title;
+                        tag = articles_content[i].Tag;
+                        content = articles_content[i].ContentText;
+                        $("#data_content").append(
+                            '<div class="post-preview">\n' +
+                            '<a href="/article/' + tag + '/' + id + '" target="_blank">\n' +
+                            '  <h2 class="post-title">[' + tag + '] ' + title + '</h2>\n' +
+                            '<div class="post-content-preview">' + content + '...</div>' +
+                            '</a></div>');
+                    }
+                }
+            })
+        }
+
+        function enter() {
+            if (event.keyCode === 13) {
+                search();
+            }
+        }
+</script>
+
+<a id="rocket" href="#top" class=""></a>
+<script type="text/javascript" src="/static/js/totop.js?v=1.0.0" async=""></script>
+</body>
+
+</html>

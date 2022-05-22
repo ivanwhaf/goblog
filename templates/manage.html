@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head tag -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="/static/js/buttons.js"></script>
+    <title>
+        Manage - Ivan | Blog
+    </title>
+    <link rel="icon" href="/static/wallpaper/1.png" type="image/png"/>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/beantech.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/static/css/rocket.css">
+
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <style>
+    td {
+        text-align:center;
+    }
+        /*switch组件*/
+        .switch-component {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background-color: #dadada;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            -webkit-appearance: none;
+            transition: all .2s ease;
+        }
+
+        /*按钮*/
+        .switch-component::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background-color: #faa;
+            border-radius: 50%;
+            transition: all .2s ease;
+        }
+
+        /*checked状态时，背景颜色改变*/
+        .switch-component:checked {
+            background-color: #86c0fa;
+        }
+
+        /*checked状态时，按钮位置改变*/
+        .switch-component:checked::after {
+            left: 50%;
+        }
+    </style>
+    <style type="text/css">
+        header.intro-header {
+            background-image: url('/static/wallpaper/list.jpg')
+                /*page*/
+        }
+    </style>
+</head>
+
+<body ontouchstart="">
+<!-- Post Header -->
+
+
+<header class="intro-header">
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>Manage</h1>
+                        <!--<hr class="small">-->
+                        <span class="subheading">博客管理</span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ivan's Blog</a>
+        </div>
+
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {{ if .nickname }}
+                    <li>
+                        <a href="/admin/{{ .username }}"
+                           title="个人主页">{{ .nickname }}</a>
+                    </li>
+                    {{ end }}
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                    <li>
+                        <a href="/archives">Archives</a>
+                    </li>
+                    <li>
+                        <a href="/tags">Tags</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        $toggle.addEventListener('click', handleMagic)
+        function handleMagic(e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                // CLOSE
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            } else {
+                // OPEN
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+</script>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <!-- Post Container -->
+        <div class="
+        col-lg-8 col-lg-offset-1
+        col-md-8 col-md-offset-1
+        col-sm-12
+        col-xs-12
+        post-container
+        ">
+            <!-- Main Content -->
+            <div class="container">
+                <div class="row" id="row">
+                    <!--<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">-->
+
+                    <div class="col-lg-10 col-lg-offset-0
+                            col-md-8 col-md-offset-1
+                            col-sm-12
+                            col-xs-12">
+                        <button type="button" class="btn btn-link" onclick="blog_manage();">博文管理</button>&emsp;&emsp;
+                        {{ if eq .authority 1 }}
+                        <button type="button" class="btn btn-link" onclick="admin_manage();">管理员管理</button>&emsp;&emsp;
+                        <button type="button" class="btn btn-link" onclick="comment_manage();">评论管理</button>&emsp;&emsp;
+                        <button type="button" class="btn btn-link" onclick="file_manage();">文件管理</button>&emsp;&emsp;
+                        <button type="button" class="btn btn-link" onclick="visitor_manage();">访客管理</button>&emsp;&emsp;
+                        {{ end }}
+                        &emsp;
+                        <button type="button" class="btn btn-info" onclick="logout();">退出登录</button>
+                        <br>
+                        <div id="blog_manage">
+                            <br>
+                            <button type="button" class="btn btn-primary btn-outline" onclick="add_blog();">添 加 博 客
+                            </button>
+                            &emsp;
+                            共 {{ .articlesCount }} 篇博客
+                            <br><br>
+                            <table id="list">
+                                <tr>
+                                    <td width="5%">id
+                                    </td>
+                                    <td width="35%">文章标题
+                                    </td>
+                                    <td width="15%">类别
+                                    </td>
+                                    <td width="10%">作者
+                                    </td>
+                                    <td width="25%">添加日期
+                                    </td>
+                                    <td width="10%">操作
+                                    </td>
+                                </tr>
+                                {{ range $article:=.articles }}
+                                <tr>
+                                    <td width="5%">{{ $article.Id }}
+                                    </td>
+                                    <td width="35%">
+                                        <a href="/article/{{ $article.Tag }}/{{ $article.Id }}/edit" target="_blank"
+                                           style="color: #0085a1">
+                                            <span>{{ $article.Title }}</span>
+                                        </a>
+                                    </td>
+                                    <td width="15%">{{ $article.Tag }}
+                                    </td>
+                                    <td width="10%">{{ $article.Author }}
+                                    </td>
+                                    <td width="25%">{{ $article.CreateDate }}
+                                    </td>
+                                    <td width="10%">
+                                        <button type="button" id="{{ $article.Id }}" class="btn btn-danger"
+                                                onclick="delete_article(this.id);">删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{ end }}
+                            </table>
+                        </div>
+
+
+                        {{ if eq .authority 1 }}
+                        <div id="admin_manage" hidden>
+                            <br>
+                            <button type="button" class="btn btn-primary btn-outline"
+                                    onclick="add_admin();">添加管理员
+                            </button> &emsp;
+                            共 {{ .adminsCount }} 个管理员<br><br>
+                            <table>
+                                <tr>
+                                    <td width="5%">id
+                                    </td>
+                                    <td width="16%">用户名
+                                    </td>
+                                    <td width="16%">密码
+                                    </td>
+                                    <td width="16%">昵称
+                                    </td>
+                                    <td width="7%">性别
+                                    </td>
+                                    <td width="10%">权限等级
+                                    </td>
+                                    <td width="20%">最近登录时间
+                                    </td>
+                                    <td width="10%">操作
+                                    </td>
+                                </tr>
+                                {{ range $admin:=.admins }}
+                                <tr>
+                                    <td width="5%">{{ $admin.id }}
+                                    </td>
+                                    <td width="16%"><a href="/admin/{{ $admin.username }}/edit" target="_blank">{{
+                                        $admin.username }}</a>
+                                    </td>
+                                    <td width="16%">{{ $admin.password }}
+                                    </td>
+                                    <td width="16%">{{ $admin.nickname }}
+                                    </td>
+                                    <td width="7%">{{ $admin.sex }}
+                                    </td>
+                                    <td width="10%">{{ $admin.authority }}
+                                    </td>
+                                    <td width="20%">{{ $admin.latestLoginDate }}
+                                    </td>
+                                    <td width="10%">
+                                        <button type="button" id="{{ $admin.id }}" class="btn btn-danger"
+                                                onclick="delete_admin(this.id);">删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{ end }}
+                            </table>
+                        </div>
+
+
+                        <div id="comment_manage" hidden>
+                            <br>
+                            共{{ .commentsCount }}条评论<br><br>
+                            <table>
+                                <tr>
+                                    <td width="5%">id
+                                    </td>
+                                    <td width="5%">文章id
+                                    </td>
+                                    <td width="10%">回复名
+                                    </td>
+                                    <td width="20%">评论内容
+                                    </td>
+                                    <td width="15%">日期
+                                    </td>
+                                    <td width="15%">ip+地址
+                                    </td>
+                                    <td width="5%">删除
+                                    </td>
+                                </tr>
+                                {{ range $comment:=.comments }}
+                                <tr>
+                                    <td width="5%">{{ $comment.Id }}
+                                    </td>
+                                    <td width="5%">{{ $comment.ArticleId }}
+                                    </td>
+                                    <td width="10%">{{ $comment.ReplyName }}
+                                    </td>
+                                    <td width="20%">{{ $comment.Content }}
+                                    </td>
+                                    <td width="15%">{{ $comment.CommentDate }}
+                                    </td>
+                                    <td width="15%">{{ $comment.Ip }}<br>{{ $comment.Location }}
+                                    </td>
+                                    <td width="5%">
+                                        <button type="button" id="{{ $comment.Id }}-{{ $comment.ArticleId }}"
+                                                class="btn btn-danger"
+                                                onclick="delete_comment(this.id);">删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{ end }}
+                            </table>
+                        </div>
+
+
+                        <div id="file_manage" hidden>
+                            文件上传权限开关：
+                            {{ if .uploadPermission }}
+                            <input class="switch-component" id="switch-component-upload" type="checkbox" checked="checked">
+                            {{ else }}
+                            <input class="switch-component" id="switch-component-upload" type="checkbox">
+                            {{ end }}
+                            <br>
+                            文件下载权限开关：
+                            {{ if .downloadPermission }}
+                            <input class="switch-component" id="switch-component-download" type="checkbox" checked="checked">
+                            {{ else }}
+                            <input class="switch-component" id="switch-component-download" type="checkbox">
+                            {{ end }}
+                            <br>
+                            公共文件：<br>
+                            {{ range $key,$publicFile:=.publicFiles }}
+                            <li><a href="/files/public/{{ $publicFile.name }}">{{ $publicFile.name }}
+                                ({{ $publicFile.size }})</a>&emsp;<button id="{{ $publicFile.name }}" onclick="delete_file_public(this.id)">删除
+                            </button>
+                            </li>
+                            {{ end }}
+                            <br>
+                            <button onclick="download_all_public_file()">全部下载</button>
+                            <br><br><br>
+
+                            私有文件：<br>
+                            {{ range $key,$privateFile:=.privateFiles }}
+                            <li><a href="/files/private/{{ $privateFile.name }}">{{ $privateFile.name }}
+                                ({{ $privateFile.size }})</a>&emsp;<button id="{{ $privateFile.name }}" onclick="delete_file_private(this.id)">删除
+                            </button>
+                            </li>
+                            {{ end }}
+                            <br>
+                            <button onclick="download_all_private_file()">全部下载</button>
+                            <br><br><br>
+                            相册文件：
+                            {{ range $key,$albumFile:=.albumFiles }}
+                            <li><a href="/files/album/{{ $albumFile.name }}">{{ $albumFile.name }} ({{ $albumFile.size }})</a>&emsp;<button id="{{ $albumFile.name }}" onclick="delete_file_album(this.id)">删除
+                            </button>
+                            </li>
+                            {{ end }}
+                            <br>
+                            <button onclick="download_all_album_file()">全部下载</button>
+                            <br>
+                        </div>
+
+                        <div id="visitor_manage" hidden>
+                            <br>
+                            <table>
+                                <tr>
+                                    <td width="10%">ip
+                                    </td>
+                                    <td width="25%">地址
+                                    </td>
+                                    <td width="20%">日期
+                                    </td>
+                                    <td width="12%">平台
+                                    </td>
+                                    <td width="13%">浏览器
+                                    </td>
+                                    <td width="15%">版本
+                                    </td>
+                                </tr>
+                                {{ range $visitor:=.visitors }}
+                                <tr>
+                                    <td width="10%">{{ $visitor.Ip }}
+                                    </td>
+                                    <td width="25%">{{ $visitor.Location }}
+                                    </td>
+                                    <td width="20%">{{ $visitor.VisitDate }}
+                                    </td>
+                                    <td width="10%">{{ $visitor.Platform }}
+                                    </td>
+                                    <td width="12%">{{ $visitor.Browser }}
+                                    </td>
+                                    <td width="13%">{{ $visitor.Version }}
+                                    </td>
+                                </tr>
+                                {{ end }}
+                            </table>
+                        </div>
+
+                        {{ end }}
+
+                        <hr>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+
+        <!-- Sidebar Container -->
+        <div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+    ">
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/wu-yu-fan-66-20">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-stack-1x fa-inverse">知</i>
+                                </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://weibo.com/u/2438209224">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://github.com/ivanwhaf">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+                </ul>
+
+                <p class="copyright text-muted">
+                    Copyright © Ivan 2019-2022
+                    <br>
+                    Theme by <a href="http://beantech.org/">BeanTech</a>
+                    <span style="display: inline-block; margin: 0 5px;">
+                            <i class="fa fa-heart"></i>
+                        </span>
+                    re-Ported by <a href="http://www.ivana.work">Ivan</a> |
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                            width="100px" height="20px"
+                            src="//ghbtns.com/github-btn.html?user=ivanwhaf&repo=xxqg-helper&type=star&count=true">
+                    </iframe>
+                    <br>
+                    苏ICP备19029983号
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/static/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/hux-blog.min.js"></script>
+
+<script>
+        function blog_manage() {
+            $("#blog_manage").hide();
+            $("#admin_manage").hide();
+            $("#comment_manage").hide();
+            $("#file_manage").hide();
+            $("#visitor_manage").hide();
+            $("#blog_manage").show();
+        }
+
+        function admin_manage() {
+            $("#blog_manage").hide();
+            $("#admin_manage").hide();
+            $("#comment_manage").hide();
+            $("#file_manage").hide();
+            $("#visitor_manage").hide();
+            $("#admin_manage").show();
+        }
+
+        function comment_manage() {
+            $("#blog_manage").hide();
+            $("#admin_manage").hide();
+            $("#comment_manage").hide();
+            $("#file_manage").hide();
+            $("#visitor_manage").hide();
+            $("#comment_manage").show();
+        }
+
+        function file_manage() {
+            //window.open('/files');
+            $("#blog_manage").hide();
+            $("#admin_manage").hide();
+            $("#comment_manage").hide();
+            $("#file_manage").hide();
+            $("#visitor_manage").hide();
+            $("#file_manage").show();
+        }
+
+        function visitor_manage() {
+            $("#blog_manage").hide();
+            $("#admin_manage").hide();
+            $("#comment_manage").hide();
+            $("#file_manage").hide();
+            $("#visitor_manage").hide();
+            $("#visitor_manage").show();
+        }
+
+        function add_blog() {
+            window.location.href = '/article/add';
+        }
+
+        function delete_article(id) {
+            var r = confirm("确认删除么？");
+            if (r != true) {
+                return false;
+            }
+            var r = confirm("真的要删除么？");
+            if (r != true) {
+                return false;
+            }
+            $.ajax(
+                {
+                    method: 'DELETE',
+                    url: '/api/article?id=' + id,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data == 1) {
+                            alert("删除成功！");
+                            window.location.href = "/manage";
+
+                        }
+                        else if (data == 0) {
+                            alert("删除失败！");
+                        }
+                        else {
+                            alert("您尚未登录或权限不足！");
+                        }
+                    }
+                }
+            );
+        }
+
+        function logout() {
+            var r = confirm("确认退出么？");
+            if (r != true) {
+                return false;
+            }
+            $.ajax(
+                {
+                    method: 'DELETE',
+                    url: '/api/admin/authentication',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data == 1) {
+                            alert("您已经成功退出！");
+                            window.location.href = "/";
+                        }
+                        else {
+                            alert("退出失败！");
+                        }
+                    }
+                }
+            );
+        }
+
+        function add_admin() {
+            window.location.href = '/admin/add';
+        }
+
+        function delete_admin(id) {
+            var r = confirm("确认删除么？");
+            if (r != true) {
+                return false;
+            }
+            var r = confirm("真的要删除么？");
+            if (r != true) {
+                return false;
+            }
+            $.ajax(
+                {
+                    method: 'DELETE',
+                    url: '/api/admin?id=' + id,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data == 1) {
+                            alert("管理员删除成功！");
+                            window.location.href = "/manage";
+                        }
+                        else if (data == 0) {
+                            alert("管理员删除失败！");
+                        }
+                        else {
+                            alert("您尚未登录或权限不足！");
+                        }
+                    }
+                }
+            );
+        }
+
+        function delete_comment(id) {
+            var r = confirm("确认删除么？");
+            if (r != true) {
+                return false;
+            }
+            var r = confirm("真的要删除么？");
+            if (r != true) {
+                return false;
+            }
+            arr=id.split("-")
+            id=arr[0];
+            article_id=arr[1];
+            $.ajax(
+                {
+                    method: 'DELETE',
+                    url: '/api/comments?id=' + id+'&article_id='+article_id,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data == 1) {
+                            alert("评论删除成功！");
+                            window.location.href = "/manage";
+                        }
+                        else if (data == 0) {
+                            alert("评论删除失败！");
+                        }
+                        else {
+                            alert("您尚未登录或权限不足！");
+                        }
+                    }
+                }
+            );
+        }
+
+
+        function delete_file_public(filename) {
+            var r = confirm("确认删除么？");
+            if (r != true) {
+                return false;
+            }
+            filename = encodeURIComponent(filename);
+            $.ajax(
+                {
+                    method: 'DELETE',
+                    url: '/api/files/public?filename=' + filename,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data == 1) {
+                            alert("公共文件删除成功！");
+                            window.location.href = "/manage";
+                        }
+                        else if (data == 0) {
+                            alert("删除失败！");
+                        }
+                        else {
+                            alert("您尚未登录或权限不足！");
+                        }
+                    }
+                }
+            );
+        }
+
+        function delete_file_private(filename) {
+            var r = confirm("确认删除么？");
+            if (r != true) {
+                return false;
+            }
+            filename = encodeURIComponent(filename);
+            $.ajax(
+                {
+                    method: 'DELETE',
+                    url: '/api/files/private?filename=' + filename,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data == 1) {
+                            alert("私有文件删除成功！");
+                            window.location.href = "/manage";
+                        }
+                        else if (data == 0) {
+                            alert("删除失败！");
+                        }
+                        else {
+                            alert("您尚未登录或权限不足！");
+                        }
+                    }
+                }
+            );
+        }
+
+        function delete_file_album(filename) {
+            var r = confirm("确认删除么？");
+            if (r != true) {
+                return false;
+            }
+            filename = encodeURIComponent(filename);
+            $.ajax(
+                {
+                    method: 'DELETE',
+                    url: '/api/album?filename=' + filename,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data == 1) {
+                            alert("相册文件删除成功！");
+                            window.location.href = "/manage";
+                        }
+                        else if (data == 0) {
+                            alert("删除失败！");
+                        }
+                        else {
+                            alert("您尚未登录或权限不足！");
+                        }
+                    }
+                }
+            );
+        }
+
+        function download_all_public_file() {
+            var r = confirm("确认下载所有公共文件么？");
+            if (r != true) {
+                return false;
+            }
+            r = Math.random().toString(36).slice(-3);
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/files/public/all/" + r, true);
+            xhr.responseType = "blob";
+            xhr.onload = function () {
+                if (this.status == 200) {
+                    var blob = this.response;
+                    var reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onload = function (e) {
+                        var a = document.createElement('a');
+                        filename = 'all_public.zip'
+                        a.download = filename;
+                        a.href = e.target.result;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }
+                }
+            }
+            xhr.send();
+        }
+
+        function download_all_private_file() {
+            var r = confirm("确认下载所有私有文件么？");
+            if (r != true) {
+                return false;
+            }
+            r = Math.random().toString(36).slice(-3);
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/files/private/all/" + r, true);
+            xhr.responseType = "blob";
+            xhr.onload = function () {
+                if (this.status == 200) {
+                    var blob = this.response;
+                    var reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onload = function (e) {
+                        var a = document.createElement('a');
+                        filename = 'all_private.zip'
+                        a.download = filename;
+                        a.href = e.target.result;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }
+                }
+            }
+            xhr.send();
+        }
+
+        function download_all_album_file() {
+            var r = confirm("确认下载所有相册文件么？");
+            if (r != true) {
+                return false;
+            }
+            r = Math.random().toString(36).slice(-3);
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/files/album/all/" + r, true);
+            xhr.responseType = "blob";
+            xhr.onload = function () {
+                if (this.status == 200) {
+                    var blob = this.response;
+                    var reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onload = function (e) {
+                        var a = document.createElement('a');
+                        filename = 'all_album.zip'
+                        a.download = filename;
+                        a.href = e.target.result;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }
+                }
+            }
+            xhr.send();
+        }
+
+        $("#switch-component-upload").click("click", function () {
+            if ($(this).is(":checked")) {
+                $.ajax(
+                    {
+                        method: 'PUT',
+                        url: '/api/files/upload_permission?perm=true',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data == "1") {
+                                alert('允许上传文件');
+                                $(".switch-component-upload").attr("checked", true);
+                            }
+                            else {
+                                alert("您尚未登录或权限不足！");
+                                //window.location.href = "/login";
+                            }
+                        }
+                    }
+                );
+            }
+            else {
+                $.ajax(
+                    {
+                        method: 'PUT',
+                        url: '/api/files/upload_permission?perm=false',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data == "0") {
+                                alert('不允许上传文件')
+                            }
+                            else {
+                                alert("您尚未登录或权限不足！");
+                               // window.location.href = "/login";
+                            }
+                        }
+                    }
+                );
+            }
+        });
+
+        $("#switch-component-download").click("click", function () {
+            if ($(this).is(":checked")) {
+                $.ajax(
+                    {
+                        method: 'PUT',
+                        url: '/api/files/download_permission?perm=true',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data == "1") {
+                                alert('允许下载文件');
+                                $(".switch-component-download").attr("checked", true);
+                            }
+                            else {
+                                alert("您尚未登录或权限不足！");
+                                //window.location.href = "/login";
+                            }
+                        }
+                    }
+                );
+            }
+            else {
+                $.ajax(
+                    {
+                        method: 'PUT',
+                        url: '/api/files/download_permission?perm=false',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data == "0") {
+                                alert('不允许下载文件')
+                            }
+                            else {
+                                alert("您尚未登录或权限不足！");
+                                //window.location.href = "/login";
+                            }
+                        }
+                    }
+                );
+            }
+        });
+</script>
+
+<a id="rocket" href="#top" class=""></a>
+<script type="text/javascript" src="/static/js/totop.js?v=1.0.0" async=""></script>
+</body>
+</html>
