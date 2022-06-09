@@ -39,6 +39,7 @@ func main() {
 	cfg := config.GetConfig()
 
 	stores.Setup()
+	//handlers.TokenRoutineStart()
 	router := InitRouter()
 	router.LoadHTMLGlob("templates/*")
 	//router.LoadHTMLFiles("templates/*")

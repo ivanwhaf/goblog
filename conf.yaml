@@ -15,8 +15,14 @@ file:
   avatarfileallowtype: [jpg, jpeg, png, gif, jfif, bmp, ico]
   publicfilepath: file/public/
   privatefilepath: file/private/
+  tempfilepath: file/temp/
   albumrawfilepath: file/album/raw/
   albumcompressfilepath: file/album/compress/
   avatarfilepath: file/avatar/
   robotstxtpath: static/robots.txt
-
+wechat:
+  appid: wxba92a44fae3ac23d
+  appsecret: d45c3fdaf171237b48edf2d80be560df
+turing:
+  turingapiurl: http://www.tuling123.com/openapi/api
+  turingkey: 6ba78da2a3b34dfd82b350f895b97bae

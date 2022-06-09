@@ -16,6 +16,7 @@ func InitRouter() *gin.Engine {
 	r.Use(sessions.Sessions("my", store))
 
 	r.GET("/", handlers.IndexHandler)
+	r.POST("/", handlers.WechatHandler)
 	r.GET("/robots.txt", handlers.RobotsHandler)
 	r.GET("/about", handlers.AboutHandler)
 	r.GET("/archives", handlers.ArchivesHandler)

@@ -20,6 +20,7 @@ type File struct {
 	AvatarFileAllowType   []string
 	PublicFilePath        string
 	PrivateFilePath       string
+	TempFilePath          string
 	AlbumRawFilePath      string
 	AlbumCompressFilePath string
 	AvatarFilePath        string
@@ -30,17 +31,27 @@ type DB struct {
 	Name string
 	Args string
 }
+type Admin struct {
+	SessionMaxAge     int
+	DefaultAvatarName string
+}
 
+type Wechat struct {
+	AppId     string
+	AppSecret string
+}
+
+type Turing struct {
+	TuringApiUrl string
+	TuringKey    string
+}
 type Config struct {
 	Server Server
 	DB     DB
 	Admin  Admin
 	File   File
-}
-
-type Admin struct {
-	SessionMaxAge     int
-	DefaultAvatarName string
+	Wechat Wechat
+	Turing Turing
 }
 
 var config *Config
