@@ -25,8 +25,7 @@ type ArticleStoreInterface interface {
 	DeleteArticle(id int64) error
 }
 
-type articleStore struct {
-}
+type articleStore struct{}
 
 func NewArticleStore() ArticleStoreInterface {
 	return &articleStore{}

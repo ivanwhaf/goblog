@@ -279,7 +279,7 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="/static/js/bootstrap.min.js"></script>
 
-<script src="/static/js/hux-blog.min.js"></script>
+<!--<script src="/static/js/hux-blog.min.js"></script>-->
 
 <script src="/static/upload/js/fileinput.js" type="text/javascript"></script>
 <script src="/static/upload/js/fileinput_locale_zh.js" type="text/javascript"></script>
@@ -292,8 +292,9 @@
             allowedFileExtensions: {{ .publicFileAllowedType }},
             overwriteInitial: false,
             maxFileSize: 300000,
-            maxFilesNum: 1,
-            enctype: 'multipart/form-data'
+            maxFileCount: 1,
+            enctype: "multipart/form-data",
+            uploadAsync: true,
         });
 
         $("#file-2").fileinput({
@@ -303,7 +304,9 @@
             allowedFileExtensions: {{ .privateFileAllowedType }},
             overwriteInitial: false,
             maxFileSize: 300000,
-            maxFilesNum: 5,
+            maxFileCount: 5,
+            enctype: "multipart/form-data",
+            uploadAsync: true,
         });
 
         $("#file-3").fileinput({
@@ -312,7 +315,9 @@
             allowedFileExtensions: {{ .albumFileAllowedType }},
             overwriteInitial: false,
             maxFileSize: 300000,
-            maxFilesNum: 5,
+            maxFileCount: 5,
+            enctype: "multipart/form-data",
+            uploadAsync: false,
         });
 
         function viewImg(img, imgfile) {
@@ -349,6 +354,30 @@
         $("#file-3").on('fileuploaded', function (event, data) {
             alert("相册图片上传成功!");
             location.reload();
+        });
+
+
+        $('#file-3').on('filebatchuploadsuccess', function(event, data, previewId, index) {
+            alert('File batch upload success');
+            location.reload();
+        });
+
+        $('#file-1').on('fileuploaderror', function(event, data, msg) {
+            if(msg!==undefined){
+                alert(msg);
+            }
+        });
+
+        $('#file-3').on('fileuploaderror', function(event, data, msg) {
+            if(msg!==undefined){
+                alert(msg);
+            }
+        });
+
+        $('#file-4').on('fileuploaderror', function(event, data, msg) {
+            if(msg!==undefined){
+                alert(msg);
+            }
         });
 </script>
 

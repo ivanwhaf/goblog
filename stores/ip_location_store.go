@@ -7,8 +7,7 @@ type IpLocationStoreInterface interface {
 	AddIpLocation(ipLocation *core.IpLocation) error
 }
 
-type ipLocationStore struct {
-}
+type ipLocationStore struct{}
 
 func NewIpLocationStore() IpLocationStoreInterface {
 	return &ipLocationStore{}

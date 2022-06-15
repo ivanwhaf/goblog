@@ -12,8 +12,7 @@ type AdminStoreInterface interface {
 	DeleteAdminById(id int64) error
 }
 
-type adminStore struct {
-}
+type adminStore struct{}
 
 func NewAdminStore() AdminStoreInterface {
 	return &adminStore{}

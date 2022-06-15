@@ -6,8 +6,7 @@ type UploadStoreInterface interface {
 	AddUpload(upload *core.Upload) error
 }
 
-type uploadStore struct {
-}
+type uploadStore struct{}
 
 func NewUploadStore() UploadStoreInterface {
 	return &uploadStore{}

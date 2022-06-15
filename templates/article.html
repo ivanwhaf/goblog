@@ -13,7 +13,7 @@
     <script async defer src="/static/js/buttons.js"></script>
 
     <title id="title">
-        {{ .Title }}
+        {{ .title }}
     </title>
     <link rel="canonical" href="/index">
 
@@ -22,19 +22,18 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/css/beantech.min.css">
-    <link rel="stylesheet" href="/static/css/donate.css">
+<!--    <link rel="stylesheet" href="/static/css/donate.css">-->
 
     <!-- Pygments Highlight CSS -->
-    <!--
-    <link rel="stylesheet" href="/static/css/highlight.css">
-    <link rel="stylesheet" href="/static/css/widget.css">
-    <link rel="stylesheet" href="/static/css/signature.css">
+<!--    <link rel="stylesheet" href="/static/css/highlight.css">-->
+<!--    <link rel="stylesheet" href="/static/css/widget.css">-->
+<!--    <link rel="stylesheet" href="/static/css/signature.css">-->
+
     <link rel="stylesheet" href="/static/css/toc.css">
-    -->
     <link rel="stylesheet" href="/static/css/rocket.css">
 
     <!-- Custom Fonts -->
-    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<!--    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">-->
 
     <!--
 	<link rel="stylesheet" href="/static/css/emacs.css">
@@ -159,8 +158,6 @@
 <body ontouchstart="">
 
 <!-- Post Header -->
-
-
 <header class="intro-header">
     <!-- Signature -->
     <div id="signature">
@@ -176,7 +173,7 @@
                         <h2 id="st1" class="subheading">{{ .subtitle }}</h2>
                         <span class="meta" id="d1">
                                 Posted by {{ .author }} on {{ .createDate }}
-                            </span>
+                        </span>
                     </div>
 
                 </div>
@@ -270,22 +267,16 @@
             col-lg-9 col-lg-offset-1
             col-md-9 col-md-offset-1
             post-container" id="essay">
-
-                <h1 id="t2"></h1>
-
-                <div class="post-content-preview" id="post-content-preview">&emsp;&nbsp;浏览量：{{ .readCount }}
+                <blockquote><div class="post-content-preview" id="post-content-preview">&nbsp;浏览量：{{ .readCount }}
                     &emsp;最近编辑于：{{ .lastEditDate }}
-                </div>
-                <br>
+                </div></blockquote>
 
                 <div style="display:none;" id="c">{{ .contentMd }}</div>
 
                 <div id="content-editormd" style="font-size:16px">
 
                 </div>
-
-                <br>
-                <hr>
+                <br><hr>
 
                 <ul class="pager">
                     {{ if ne .previousId "" }}
@@ -328,47 +319,34 @@
                     display: none
                 }
             </style>
-
             <!-- Sidebar Container -->
             <aside id="sidebar">
+                <br>
                 <div id="toc" class="toc-article">
-                    <br><br><br>
                     <strong class="toc-title">Contents</strong>
-
-
-                    <ol class="toc-nav" id='ol'>
-                        <!--
-                    <li class="toc-nav-item toc-nav-level-1">
-                    <a class="toc-nav-link" href="#t2">
-                    <span class="toc-nav-text">{{ .title }}</span>
-                    </a>
-                     </li>
-                    -->
-                        {{ range $h1:=.titleNodeLst }}
+                    <ol class="toc-nav">
+                        {{ range $h1:=.tagNodeLst }}
                         <li class="toc-nav-item toc-nav-level-1">
                             <a class="toc-nav-link" href="#{{ $h1.Id }}">
-                                <span class="toc-nav-text">{{ $h1.S }}</span>
+                                <span class="toc-nav-text">{{ $h1.Text }}</span>
                             </a>
-
-<!--                            {{ if $h1.Children }}-->
+                            {{ if $h1.Children }}
                             <ol class="toc-nav-child">
                                 {{ range $h2:=$h1.Children }}
                                 <li class="toc-nav-item toc-nav-level-2">
                                     <a class="toc-nav-link" href="#{{ $h2.Id }}">
-                                        <span class="toc-nav-text">{{ $h2.S }}</span>
+                                        <span class="toc-nav-text">{{ $h2.Text }}</span>
                                     </a>
                                 </li>
                                 {{ end }}
-                                <ol>
-<!--                                    {{ end }}-->
-                                    </li>
-                                    {{ end }}
-                                </ol>
                             </ol>
+                            {{ end }}
+                        </li>
+                        {{ end }}
                     </ol>
+
                 </div>
             </aside>
-
         </div><!-- row-->
 
     </div><!-- container -->
@@ -507,10 +485,10 @@
 <script src="/static/js/editormd.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="/static/js/bootstrap.min.js"></script>
+<!--<script src="/static/js/bootstrap.min.js"></script>-->
 
 <!-- Custom Theme JavaScript -->
-<script src="/static/js/hux-blog.min.js"></script>
+<!--<script src="/static/js/hux-blog.min.js"></script>-->
 
 <script type="text/javascript" src="/static/js/jquery.comment.js"></script>
 

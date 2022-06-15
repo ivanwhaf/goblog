@@ -12,8 +12,7 @@ type CommentStoreInterface interface {
 	DeleteCommentsByArticleId(articleId int64) error
 }
 
-type commentStore struct {
-}
+type commentStore struct{}
 
 func NewCommentStore() CommentStoreInterface {
 	return &commentStore{}

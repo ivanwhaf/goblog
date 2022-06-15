@@ -9,8 +9,7 @@ type LoginStoreInterface interface {
 	AddLogin(login *core.Login) error
 }
 
-type loginStore struct {
-}
+type loginStore struct{}
 
 func NewLoginStore() LoginStoreInterface {
 	return &loginStore{}

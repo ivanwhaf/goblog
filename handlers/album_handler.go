@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"goblog/config"
@@ -23,6 +24,7 @@ func AlbumHandler(c *gin.Context) {
 	}
 	dir, err := ioutil.ReadDir(config.GetConfig().File.AlbumCompressFilePath)
 	if err != nil {
+		fmt.Println("read album dir error", err)
 		c.HTML(http.StatusOK, "album.html", gin.H{})
 		return
 	}

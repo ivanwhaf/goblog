@@ -18,8 +18,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/css/beantech.min.css">
 
-    <link rel="stylesheet" href="/static/css/donate.css">
-
     <!-- Pygments Highlight CSS -->
     <link rel="stylesheet" href="/static/css/rocket.css">
 
@@ -172,7 +170,7 @@
             <input type="hidden" name="id" id="id_" value="{{ .id }}">
             <div class="img_div">
                 <input id="avatar_name" style="display:none" value="{{ .avatar }}">
-                <img id="avatar" src="/admin/avatar/{{ .avatar }}/{{ .random }}">
+                <img id="avatar" src="/files/avatar/{{ .avatar }}?r={{ .random }}">
                 <input style="display:none;" name="file" type="file" id="img">
                 <a href="javascript:void(0);" onclick="img_click();">
                     <div class="mask">
@@ -204,13 +202,13 @@
             <div>
                 性别：<span id="sex">{{ .sex }}</span>
                 <span id="edit_sex" style="display:none">
-                        {% if sex =='男' %}
+                        {{ if eq .sex "男" }}
                             <input name="sex" id="sex_m" type="radio" value="男" checked="checked">男
                             <input name="sex" id="sex_f" type="radio" value="女">女
-                        {% else %}
+                        {{ else }}
                             <input name="sex" id="sex_m" type="radio" value="男">男
                             <input name="sex" id="sex_f" type="radio" value="女" checked="checked">女
-                        {% endif %}
+                        {{ end }}
                     </span>
                 &emsp;&emsp;<a href="javascript:void(0);" id="edit_sex_btn" onclick="edit_sex();">修改</a>
                 <div id="edit_sex_btns" style="display:none;"><br>&emsp;&emsp;&emsp;
@@ -303,7 +301,7 @@
 <script src="/static/js/bootstrap.min.js"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="/static/js/hux-blog.min.js"></script>
+<!--<script src="/static/js/hux-blog.min.js"></script>-->
 
 <!-- async load function -->
 <script>
@@ -315,8 +313,6 @@
             if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
             s.parentNode.insertBefore(o, s);
         }
-
-
 </script>
 
 <!--fastClick.js -->
@@ -524,8 +520,6 @@
                 }
             });
         }
-
-
 </script>
 <a id="rocket" href="#top" class=""></a>
 <script type="text/javascript" src="/static/js/totop.js?v=1.0.0" async=""></script>

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"goblog/stores"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 
 // TagsHandler /tags GET
 func TagsHandler(c *gin.Context) {
+	session := sessions.Default(c)
 	articles, _ := stores.ArticleStore.GetArticlesOrderByIdWithFields("id", "title", "tag")
 	resMap := make(map[string][]map[string]string)
 	for _, article := range articles {
@@ -22,5 +24,9 @@ func TagsHandler(c *gin.Context) {
 		}
 		resMap[tag] = append(resMap[tag], m)
 	}
-	c.HTML(http.StatusOK, "tags.html", gin.H{"resMap": resMap})
+	c.HTML(http.StatusOK, "tags.html", gin.H{
+		"resMap":   resMap,
+		"username": session.Get("username"),
+		"nickname": session.Get("nickname"),
+	})
 }

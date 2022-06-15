@@ -10,6 +10,7 @@ import (
 	"io"
 	"io/ioutil"
 	"math/rand"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"strings"
@@ -20,7 +21,7 @@ type AccessToken struct {
 	AppId       string
 	Secret      string
 	AccessToken string
-	LifeTime    int64
+	LifeTime    float64
 }
 
 var accessToken AccessToken
@@ -35,9 +36,15 @@ func (a *AccessToken) UpdateToken() {
 	err := json.Unmarshal(body, &j)
 	if err != nil {
 		fmt.Println("json unmarshal error")
+		return
 	}
-	a.AccessToken = j["access_token"].(string)
-	a.LifeTime = j["expires_in"].(int64)
+	if t, ok := j["access_token"]; ok {
+		a.AccessToken = t.(string)
+		fmt.Println("update token", a.AccessToken)
+	}
+	if e, ok := j["expires_in"]; ok {
+		a.LifeTime = e.(float64)
+	}
 }
 
 func TokenHandle(a *AccessToken) {
@@ -47,13 +54,18 @@ func TokenHandle(a *AccessToken) {
 			a.LifeTime -= 5
 		} else {
 			a.UpdateToken()
-			fmt.Println("update token")
+			time.Sleep(time.Second * 1)
 		}
 	}
 }
 
 func TokenRoutineStart() {
-	accessToken = AccessToken{}
+	accessToken = AccessToken{
+		AppId:       config.GetConfig().Wechat.AppId,
+		Secret:      config.GetConfig().Wechat.AppSecret,
+		AccessToken: "",
+		LifeTime:    0,
+	}
 	go TokenHandle(&accessToken)
 }
 
@@ -108,8 +120,7 @@ type ReplyImageMsg struct {
 
 func (r *ReplyImageMsg) ToXml() string {
 	resp := "<xml><ToUserName><![CDATA[" + r.ToUserName + "]]></ToUserName><FromUserName><![CDATA[" + r.FromUserName +
-		"]]></FromUserName><CreateTime>" + r.CreateTime +
-		"</CreateTime><MsgType><![CDATA[image]]></MsgType><Image><MediaId><![CDATA[" +
+		"]]></FromUserName><CreateTime>" + r.CreateTime + "</CreateTime><MsgType><![CDATA[image]]></MsgType><Image><MediaId><![CDATA[" +
 		r.MediaId + "]]></MediaId></Image></xml>"
 	return resp
 }
@@ -126,14 +137,16 @@ func GetRandomMediaId() (string, error) {
 	fileName := config.GetConfig().File.TempFilePath + "media_id.txt"
 	file, err := ioutil.ReadFile(fileName)
 	if err != nil {
+		fmt.Println("read media id file error", err)
 		return "", err
 	}
 	lines := strings.Split(string(file), "\n")
+	// CRLF LF!!
 	mediaId := lines[rand.Intn(len(lines))]
 	return mediaId, nil
 }
 
-func GetRobotResponse(content string) string {
+func GetTuringRobotResponse(content string) string {
 	m := map[string]string{
 		"key":    config.GetConfig().Turing.TuringKey,
 		"info":   content,
@@ -141,43 +154,69 @@ func GetRobotResponse(content string) string {
 	}
 	bytesData, _ := json.Marshal(m)
 	data := bytes.NewBuffer(bytesData)
-	res, _ := http.Post(config.GetConfig().Turing.TuringApiUrl, "application/json;charset=utf-8", data)
+	res, err := http.Post(config.GetConfig().Turing.TuringApiUrl, "application/json;charset=utf-8", data)
+	if err != nil {
+		fmt.Println("http post error", err)
+		return "本喵听不懂你在说什么o(=•ェ•=)m😕"
+	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println("read resp.Body failed")
-		return ""
+		fmt.Println("read resp.Body failed", err)
+		return "本喵听不懂你在说什么o(=•ェ•=)m😕"
 	}
 
-	var r = make(map[string]interface{})
-	fmt.Println("Body:", string(body))
-	err = json.Unmarshal(body, &r)
+	var j = make(map[string]interface{})
+
+	err = json.Unmarshal(body, &j)
 	if err != nil {
-		fmt.Println("json unmarshal failed")
-		return ""
+		fmt.Println("json unmarshal failed", err)
+		return "本喵听不懂你在说什么o(=•ェ•=)m😕"
 	}
 
-	code := r["code"].(float64)
+	code := j["code"].(float64)
 	if code == 100000 {
-		return r["text"].(string)
+		// text
+		return j["text"].(string)
 	} else if code == 200000 {
-		return r["url"].(string)
+		// pic
+		return j["url"].(string)
 	} else if code == 302000 {
-		return r["list"].(string)
+		// news
+		return j["list"].(string)
 	} else if code == 308000 {
-		return r["list"].(string)
+		// dish
+		return j["list"].(string)
 	} else {
 		return "本喵有点累了要休息了，明天再找我玩吧o(=•ェ•=)m😕！"
 	}
 }
 
-func DownloadPicFromUrl(url string) string {
+func DownloadPicFromUrl(url string, savePath string) string {
 	sl := strings.Split(url, "//")[1]
 	sl = strings.Split(sl, "/")[1]
 	ext := strings.Split(sl, "_")[1]
-	fmt.Println(ext)
-	return ext
+	res, err := http.Get(url)
+	if err != nil {
+		fmt.Println("http get error", err)
+		return ""
+	}
+	defer res.Body.Close()
+
+	data, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println("read body error", err)
+		return ""
+	}
+	fileName := time.Now().Format("2006-01-02 15:03:04") + "." + ext
+	err = ioutil.WriteFile(savePath+fileName, data, 0644)
+	if err != nil {
+		fmt.Println("save pic error", err)
+		return ""
+	}
+	fmt.Println("download pic from url")
+	return fileName
 }
 
 func SaveMediaId(mediaId string) {
@@ -193,30 +232,56 @@ func SaveMediaId(mediaId string) {
 }
 
 func UploadPermanentMaterialImage(filename string) string {
-	accessToken := ""
-	url := "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=" + accessToken + "&type=image"
+	url := "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=" + accessToken.AccessToken + "&type=image"
 	fmt.Println("start upload permanent material image")
-	file, _ := ioutil.ReadFile(config.GetConfig().File.TempFilePath + filename)
-	res, err := http.Post(url, "multipart/form-data", bytes.NewReader(file))
+	//file, _ := ioutil.ReadFile(config.GetConfig().File.TempFilePath + filename)
+	//fmt.Println("FILE:", file[:10], len(file))
+	//
+	//res, err := http.Post(url, "multipart/form-data", bytes.NewReader(file))
+	//if err != nil {
+	//	fmt.Println("post material image error", err)
+	//	return ""
+	//}
+
+	buff := &bytes.Buffer{}
+	writer := multipart.NewWriter(buff)
+
+	fileWriter, err := writer.CreateFormFile("media", config.GetConfig().File.TempFilePath+filename)
 	if err != nil {
-		fmt.Println("post material image error")
+		fmt.Println("file write to buffer error", err)
+		return ""
+	}
+	fh, err := os.Open(config.GetConfig().File.TempFilePath + filename)
+	if err != nil {
+		fmt.Println("open file error", err)
+		return ""
+	}
+
+	_, _ = io.Copy(fileWriter, fh)
+
+	writer.Close()
+	contentType := writer.FormDataContentType()
+	res, err := http.Post(url, contentType, buff)
+	if err != nil {
+		fmt.Println("http post error", err)
 		return ""
 	}
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println("read resp.Body failed")
+		fmt.Println("read resp.Body failed", err)
 		return ""
 	}
 
-	var r = make(map[string]string)
-	fmt.Println("Body:", string(body))
+	var r = make(map[string]interface{})
+	//fmt.Println("Body:", string(body))
 	err = json.Unmarshal(body, &r)
 	if err != nil {
-		fmt.Println("json unmarshal failed")
+		fmt.Println("json unmarshal failed", err)
 		return ""
 	}
-	mediaId := r["media_id"]
+	mediaId := r["media_id"].(string)
+	fmt.Println("upload permanent material image:", mediaId)
 	return mediaId
 }
 
@@ -232,8 +297,6 @@ func WechatHandler(c *gin.Context) {
 		c.String(200, "本喵不明白你在说什么🐱")
 		return
 	}
-
-	fmt.Println(xmlMsg.MsgType)
 
 	msgType := xmlMsg.MsgType
 	if msgType == "text" {
@@ -257,7 +320,7 @@ func WechatHandler(c *gin.Context) {
 			return
 		}
 
-		replyContent := GetRobotResponse(msg.Content)
+		replyContent := GetTuringRobotResponse(msg.Content)
 		fmt.Println("Turing robot reply:", replyContent)
 		replyMsg := ReplyTextMsg{
 			ReplyMsg: ReplyMsg{
@@ -267,7 +330,6 @@ func WechatHandler(c *gin.Context) {
 			},
 			Content: replyContent,
 		}
-		fmt.Println(replyMsg.ToXml())
 		c.String(200, replyMsg.ToXml())
 		return
 	} else if msgType == "image" {
@@ -276,12 +338,14 @@ func WechatHandler(c *gin.Context) {
 		_ = xml.Unmarshal(body, &msg)
 
 		fmt.Println("[Image] From:", msg.FromUserName, msg.PicUrl)
-		picType := DownloadPicFromUrl(msg.PicUrl)
-		mediaId := UploadPermanentMaterialImage(picType)
+		savePath := config.GetConfig().File.TempFilePath
+		picName := DownloadPicFromUrl(msg.PicUrl, savePath)
+		mediaId := UploadPermanentMaterialImage(picName)
 		if mediaId != "" {
 			SaveMediaId(mediaId)
 		}
 		randomMediaId, _ := GetRandomMediaId()
+		fmt.Println("random media id:", randomMediaId)
 		replyMsg := ReplyImageMsg{
 			ReplyMsg: ReplyMsg{
 				ToUserName:   msg.FromUserName,
@@ -290,7 +354,7 @@ func WechatHandler(c *gin.Context) {
 			},
 			MediaId: randomMediaId,
 		}
-		fmt.Println(replyMsg.ToXml())
+		//fmt.Println(replyMsg.ToXml())
 		c.String(200, replyMsg.ToXml())
 		return
 	} else if msgType == "voice" {
@@ -308,7 +372,6 @@ func WechatHandler(c *gin.Context) {
 			},
 			Content: recognition,
 		}
-		fmt.Println(replyMsg.ToXml())
 		c.String(200, replyMsg.ToXml())
 		return
 	} else if msgType == "event" {
@@ -326,6 +389,7 @@ func WechatHandler(c *gin.Context) {
 			Content: content,
 		}
 		c.String(200, replyMsg.ToXml())
+		return
 	} else {
 		c.String(200, "本喵不明白你在说什么🐱")
 		return

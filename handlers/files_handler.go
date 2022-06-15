@@ -11,6 +11,7 @@ import (
 	"goblog/util"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -24,15 +25,15 @@ func FilesHandler(c *gin.Context) {
 	var login int
 	cfg := config.GetConfig()
 
-	publicFiles = services.GetFiles(cfg.File.PublicFilePath)
-	publicFilesCount := len(publicFiles)
-
 	session := sessions.Default(c)
 	if session.Get("username") != nil && session.Get("authority") == int8(1) {
 		login = 1
 		privateFiles = services.GetFiles(cfg.File.PrivateFilePath)
 		albumFiles = services.GetFiles(cfg.File.AlbumCompressFilePath)
 	}
+
+	publicFiles = services.GetFiles(cfg.File.PublicFilePath)
+	publicFilesCount := len(publicFiles)
 
 	c.HTML(http.StatusOK, "files.html", gin.H{
 		"publicFiles":          publicFiles,
@@ -91,6 +92,12 @@ func FilesAlbumHandler(c *gin.Context) {
 	c.File(config.GetConfig().File.AlbumCompressFilePath + fileName)
 }
 
+// FilesAlbumHandler2 /album/:filename GET
+func FilesAlbumHandler2(c *gin.Context) {
+	fileName := c.Param("filename")
+	c.File(config.GetConfig().File.AlbumCompressFilePath + fileName)
+}
+
 // FilesAvatarHandler /files/avatar/:filename/:r
 func FilesAvatarHandler(c *gin.Context) {
 	fileName := c.Param("filename")
@@ -101,14 +108,15 @@ func FilesAvatarHandler(c *gin.Context) {
 func ApiFilesPublicUploadHandler(c *gin.Context) {
 	cfg := config.GetConfig()
 	if !cfg.File.UploadPermission {
-		c.String(http.StatusOK, "0")
+		c.String(http.StatusInternalServerError, "no upload permission")
 		return
 	}
 	file, err := c.FormFile("file")
 	if err != nil {
-		c.String(http.StatusInternalServerError, "0")
+		c.String(http.StatusInternalServerError, "get file error")
 		return
 	}
+
 	name := file.Filename
 	s := strings.Split(name, ".")
 	ext := s[0]
@@ -117,15 +125,17 @@ func ApiFilesPublicUploadHandler(c *gin.Context) {
 	}
 
 	if !util.ElementInSlice(ext, cfg.File.PublicFileAllowType) {
-		c.String(http.StatusInternalServerError, "0")
+		c.String(http.StatusInternalServerError, "file ext not allowed")
 		return
 	}
 
 	err = c.SaveUploadedFile(file, cfg.File.PublicFilePath+name)
 	if err != nil {
-		c.String(http.StatusInternalServerError, "0")
+		fmt.Println("save upload file error", err)
+		c.String(http.StatusInternalServerError, "save upload file error")
 		return
 	}
+	fmt.Println("shit")
 	env := util.ParseUserAgent(c.Request.UserAgent())
 	go AddUploadRecord(&core.Upload{
 		Filename:   name,
@@ -140,9 +150,18 @@ func ApiFilesPublicUploadHandler(c *gin.Context) {
 
 // ApiFilesPrivateUploadHandler /api/files/private POST
 func ApiFilesPrivateUploadHandler(c *gin.Context) {
+	session := sessions.Default(c)
+	username := session.Get("username")
+	authority := session.Get("authority")
+	if username == nil || !util.ElementInSlice(authority, []int8{1, 2}) {
+		c.String(http.StatusInternalServerError, "no permission")
+		return
+	}
+
 	file, err := c.FormFile("file")
 	if err != nil {
-		c.String(http.StatusInternalServerError, "0")
+		fmt.Println("get form file error", err)
+		c.String(http.StatusInternalServerError, "get file error")
 		return
 	}
 	name := file.Filename
@@ -154,13 +173,14 @@ func ApiFilesPrivateUploadHandler(c *gin.Context) {
 
 	cfg := config.GetConfig()
 	if !util.ElementInSlice(ext, cfg.File.PrivateFileAllowType) {
-		c.String(http.StatusInternalServerError, "0")
+		c.String(http.StatusInternalServerError, "file ext not allowed")
 		return
 	}
 
 	err = c.SaveUploadedFile(file, cfg.File.PrivateFilePath+name)
 	if err != nil {
-		c.String(http.StatusInternalServerError, "0")
+		fmt.Println("save upload file error", err)
+		c.String(http.StatusInternalServerError, "save upload file error")
 		return
 	}
 	c.String(http.StatusOK, "1")
@@ -172,7 +192,7 @@ func ApiFilesAlbumUploadHandler(c *gin.Context) {
 	username := session.Get("username")
 	authority := session.Get("authority")
 	if username == nil || !util.ElementInSlice(authority, []int8{1, 2}) {
-		c.String(200, "-1")
+		c.String(http.StatusInternalServerError, "no permission")
 		return
 	}
 
@@ -198,6 +218,7 @@ func ApiFilesAlbumUploadHandler(c *gin.Context) {
 
 		dir, err := ioutil.ReadDir(config.GetConfig().File.AlbumRawFilePath)
 		if err != nil {
+			fmt.Println("read album dir error", err)
 			c.String(200, "0")
 			return
 		}
@@ -212,11 +233,11 @@ func ApiFilesAlbumUploadHandler(c *gin.Context) {
 		}
 
 		fileName = ymd + "-" + strconv.Itoa(i+1) + "." + ext
-		fmt.Println("fileName", fileName)
 
 		// save raw image
 		err = c.SaveUploadedFile(file, cfg.File.AlbumRawFilePath+fileName)
 		if err != nil {
+			fmt.Println("save upload file error")
 			c.String(http.StatusInternalServerError, "0")
 			return
 		}
@@ -233,9 +254,19 @@ func ApiFilesAlbumUploadHandler(c *gin.Context) {
 			//newFile, _ := os.Create(cfg.File.AlbumCompressFilePath + ymd + "-" + strconv.Itoa(i+1) + "." + "jpg")
 			//
 			//_ = jpeg.Encode(newFile, jpgImg, &jpeg.Options{Quality: 40})
-			_ = c.SaveUploadedFile(file, cfg.File.AlbumCompressFilePath+fileName)
+			err = c.SaveUploadedFile(file, cfg.File.AlbumCompressFilePath+fileName)
+			if err != nil {
+				fmt.Println("save upload file error")
+				c.String(http.StatusInternalServerError, "0")
+				return
+			}
 		} else {
-			_ = c.SaveUploadedFile(file, cfg.File.AlbumCompressFilePath+fileName)
+			err = c.SaveUploadedFile(file, cfg.File.AlbumCompressFilePath+fileName)
+			if err != nil {
+				fmt.Println("save upload file error")
+				c.String(http.StatusInternalServerError, "0")
+				return
+			}
 		}
 	}
 	c.String(http.StatusOK, "1")
@@ -306,7 +337,7 @@ func ApiEditorMdAlbumHandler(c *gin.Context) {
 		})
 		return
 	}
-	err = c.SaveUploadedFile(file, cfg.File.AlbumCompressFilePath)
+	err = c.SaveUploadedFile(file, cfg.File.AlbumCompressFilePath+fileName)
 	if err != nil {
 		c.JSON(200, gin.H{
 			"success": 0,
@@ -365,6 +396,91 @@ func ApiFilesDownloadPermissionHandler(c *gin.Context) {
 		return
 	}
 	c.String(200, "-1")
+}
+
+// ApiFilesPublicDeleteHandler /api/files/public DELETE
+func ApiFilesPublicDeleteHandler(c *gin.Context) {
+	fileName := c.DefaultQuery("filename", "")
+	session := sessions.Default(c)
+	cfg := config.GetConfig()
+
+	if session.Get("username") == nil {
+		c.HTML(http.StatusNotFound, "404.html", nil)
+		return
+	}
+	path := cfg.File.PublicFilePath + fileName
+
+	if !util.ExistsPath(path) {
+		c.String(200, "0")
+		return
+	}
+	if util.IsDir(path) {
+		c.String(200, "0")
+		return
+	}
+	err := os.Remove(path)
+	if err != nil {
+		fmt.Println("file delete error", err)
+		c.String(200, "0")
+		return
+	}
+	c.String(200, "1")
+}
+
+// ApiFilesPrivateDeleteHandler /api/files/private DELETE
+func ApiFilesPrivateDeleteHandler(c *gin.Context) {
+	fileName := c.DefaultQuery("filename", "")
+	session := sessions.Default(c)
+	cfg := config.GetConfig()
+
+	if session.Get("username") == nil {
+		c.HTML(http.StatusNotFound, "404.html", nil)
+		return
+	}
+	path := cfg.File.PrivateFilePath + fileName
+	if !util.ExistsPath(path) {
+		c.String(200, "0")
+		return
+	}
+	if util.IsDir(path) {
+		c.String(200, "0")
+		return
+	}
+	err := os.Remove(path)
+	if err != nil {
+		fmt.Println("file delete error", err)
+		c.String(200, "0")
+		return
+	}
+	c.String(200, "1")
+}
+
+// ApiFilesAlbumDeleteHandler /api/files/album DELETE
+func ApiFilesAlbumDeleteHandler(c *gin.Context) {
+	fileName := c.DefaultQuery("filename", "")
+	session := sessions.Default(c)
+	cfg := config.GetConfig()
+
+	if session.Get("username") == nil {
+		c.HTML(http.StatusNotFound, "404.html", nil)
+		return
+	}
+	path := cfg.File.AlbumCompressFilePath + fileName
+	if !util.ExistsPath(path) {
+		c.String(200, "0")
+		return
+	}
+	if util.IsDir(path) {
+		c.String(200, "0")
+		return
+	}
+	err := os.Remove(path)
+	if err != nil {
+		fmt.Println("file delete error", err)
+		c.String(200, "0")
+		return
+	}
+	c.String(200, "1")
 }
 
 func AddUploadRecord(u *core.Upload) {

@@ -74,14 +74,7 @@ func AdminEditHandler(c *gin.Context) {
 		"sex":       admin.Sex,
 		"authority": admin.Authority,
 		"avatar":    admin.Avatar,
-		"random":    randstr.RandomAlphabetic(2),
 	})
-}
-
-// AdminAvatarHandler /admin/avatar/:filename/:r GET
-func AdminAvatarHandler(c *gin.Context) {
-	fileName := c.Param("filename")
-	c.File(config.GetConfig().File.AvatarFilePath + fileName)
 }
 
 // ApiAdminLoginHandler /api/admin/authentication POST
@@ -91,7 +84,6 @@ func ApiAdminLoginHandler(c *gin.Context) {
 	admin, _ := stores.AdminStore.GetAdminByUsername(username)
 
 	if admin.Password != password {
-		c.String(http.StatusOK, "0")
 		ip := c.ClientIP()
 		env := util.ParseUserAgent(c.Request.UserAgent())
 		AddLoginRecord(&core.Login{
@@ -104,6 +96,7 @@ func ApiAdminLoginHandler(c *gin.Context) {
 			Browser:   env.Browser,
 			Version:   env.Version,
 		})
+		c.String(http.StatusOK, "0")
 		return
 	}
 
@@ -207,6 +200,7 @@ func ApiAdminEditHandler(c *gin.Context) {
 		_ = stores.AdminStore.UpdateAdminById(util.StringToInt64(id), &core.Admin{
 			Nickname: nickname,
 		})
+		session.Set("nickname", nickname)
 		c.String(200, "1")
 		return
 	} else if field == "sex" {
@@ -231,11 +225,11 @@ func ApiAdminEditHandler(c *gin.Context) {
 		return
 	} else if field == "all" {
 		if authorityS.(int8) != int8(1) {
-			c.String(200, "-1")
+			c.String(200, "0")
 			return
 		}
 		if !util.ElementInSlice(sex, []string{"男", "女"}) || len(username) > 30 || len(password) > 30 || len(nickname) > 30 {
-			c.String(200, "-1")
+			c.String(200, "0")
 			return
 		}
 		_ = stores.AdminStore.UpdateAdminById(util.StringToInt64(id), &core.Admin{

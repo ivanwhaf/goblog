@@ -140,8 +140,8 @@
 
 <button id="id_btn_l" onclick="btn_l();" class="button_l" style="vertical-align:middle"><span>Previous</span></button>
 <div class="grid" id="grid">
-    {{ range $loop,$img:=.fileLst }}
-    {{ if le $loop 8 }}
+    {{ range $i,$img:=.fileLst }}
+    {{ if lt $i 8 }}
     <photo-card img="files/album/{{ $img }}" link="files/album/{{ $img }}"></photo-card>
     {{ end }}
     {{ end }}
@@ -209,7 +209,7 @@
           return;
         }
       }
-      alert("start:"+start+" end:"+end)
+      // alert("start:"+start+" end:"+end)
 
       var grid = document.getElementById("grid");
       for (var i = 0; i <= 7; i++) {

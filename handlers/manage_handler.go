@@ -27,7 +27,22 @@ func ManageHandler(c *gin.Context) {
 	}
 
 	articles, _ := stores.ArticleStore.GetArticlesOrderByIdWithFields("id", "title", "tag", "create_date", "author")
+
 	comments, _ := stores.CommentStore.GetCommentsOrderById()
+	var commentsSlc []map[string]string
+	for _, comment := range comments {
+		m := map[string]string{
+			"Id":          strconv.FormatInt(comment.Id, 10),
+			"ArticleId":   strconv.FormatInt(comment.ArticleId, 10),
+			"ReplyName":   comment.ReplyName,
+			"Content":     comment.Content,
+			"CommentDate": comment.CommentDate.Format("2006-01-02 15:03:04"),
+			"Ip":          comment.Ip,
+			"Location":    comment.Location,
+		}
+		commentsSlc = append(commentsSlc, m)
+	}
+
 	var adminsSlc []map[string]string
 
 	if session.Get("authority") == int8(1) {
@@ -41,9 +56,9 @@ func ManageHandler(c *gin.Context) {
 				"sex":       admin.Sex,
 				"authority": strconv.Itoa(int(admin.Authority)),
 			}
-			latestLoginDate, _ := stores.LoginStore.GetLatestLoginByUsername(admin.Username)
-			if latestLoginDate.Ip != "" {
-				m["latestLoginDate"] = latestLoginDate.LoginDate.String()
+			latestLogin, _ := stores.LoginStore.GetLatestLoginByUsername(admin.Username)
+			if latestLogin.Ip != "" {
+				m["latestLoginDate"] = latestLogin.LoginDate.Format("2006-01-02 15:03:04")
 			}
 			adminsSlc = append(adminsSlc, m)
 		}
@@ -58,7 +73,7 @@ func ManageHandler(c *gin.Context) {
 	c.HTML(http.StatusOK, "manage.html", gin.H{
 		"articles":           articles,
 		"articlesCount":      len(articles),
-		"comments":           comments,
+		"comments":           commentsSlc,
 		"commentsCount":      len(comments),
 		"admins":             adminsSlc,
 		"adminsCount":        len(adminsSlc),
@@ -69,5 +84,7 @@ func ManageHandler(c *gin.Context) {
 		"uploadPermission":   cfg.File.UploadPermission,
 		"downloadPermission": cfg.File.DownloadPermission,
 		"authority":          authority,
+		"username":           session.Get("username"),
+		"nickname":           session.Get("nickname"),
 	})
 }

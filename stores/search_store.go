@@ -7,8 +7,7 @@ type SearchStoreInterface interface {
 	AddSearch(search *core.Search) error
 }
 
-type searchStore struct {
-}
+type searchStore struct{}
 
 func NewSearchStore() SearchStoreInterface {
 	return &searchStore{}

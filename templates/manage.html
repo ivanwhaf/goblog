@@ -19,7 +19,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/css/beantech.min.css">
 
-    <!-- Pygments Highlight CSS -->
     <link rel="stylesheet" href="/static/css/rocket.css">
 
     <!-- Custom Fonts -->
@@ -302,38 +301,38 @@
                         <div id="comment_manage" hidden>
                             <br>
                             共{{ .commentsCount }}条评论<br><br>
-                            <table>
+                            <table style="table-layout: fixed">
                                 <tr>
-                                    <td width="5%">id
+                                    <td style="width: 5%">id
                                     </td>
-                                    <td width="5%">文章id
+                                    <td style="width: 8%">文章id
                                     </td>
-                                    <td width="10%">回复名
+                                    <td style="width: 10%">回复名
                                     </td>
-                                    <td width="20%">评论内容
+                                    <td style="width: 30%">评论内容
                                     </td>
-                                    <td width="15%">日期
+                                    <td style="width: 10%">日期
                                     </td>
-                                    <td width="15%">ip+地址
+                                    <td style="width: 10%">ip+地址
                                     </td>
-                                    <td width="5%">删除
+                                    <td style="width: 10%">删除
                                     </td>
                                 </tr>
                                 {{ range $comment:=.comments }}
                                 <tr>
-                                    <td width="5%">{{ $comment.Id }}
+                                    <td style="width: 5%">{{ $comment.Id }}
                                     </td>
-                                    <td width="5%">{{ $comment.ArticleId }}
+                                    <td style="width: 8%">{{ $comment.ArticleId }}
                                     </td>
-                                    <td width="10%">{{ $comment.ReplyName }}
+                                    <td style="width: 10%">{{ $comment.ReplyName }}
                                     </td>
-                                    <td width="20%">{{ $comment.Content }}
+                                    <td style="width: 30%">{{ $comment.Content }}
                                     </td>
-                                    <td width="15%">{{ $comment.CommentDate }}
+                                    <td style="width: 10%">{{ $comment.CommentDate }}
                                     </td>
-                                    <td width="15%">{{ $comment.Ip }}<br>{{ $comment.Location }}
+                                    <td style="width: 10%">{{ $comment.Ip }}<br>{{ $comment.Location }}
                                     </td>
-                                    <td width="5%">
+                                    <td style="width: 10%">
                                         <button type="button" id="{{ $comment.Id }}-{{ $comment.ArticleId }}"
                                                 class="btn btn-danger"
                                                 onclick="delete_comment(this.id);">删除
@@ -359,34 +358,40 @@
                             {{ else }}
                             <input class="switch-component" id="switch-component-download" type="checkbox">
                             {{ end }}
-                            <br>
+                            <br><br>
                             公共文件：<br>
+                            <ul class="list-group" style="overflow-y: scroll;height:500px;">
                             {{ range $key,$publicFile:=.publicFiles }}
-                            <li><a href="/files/public/{{ $publicFile.name }}">{{ $publicFile.name }}
-                                ({{ $publicFile.size }})</a>&emsp;<button id="{{ $publicFile.name }}" onclick="delete_file_public(this.id)">删除
+                            <li class="list-group-item"><a href="/files/public/{{ $publicFile.name }}">{{ $publicFile.name }}
+                                ({{ $publicFile.size }})</a> <button id="{{ $publicFile.name }}" onclick="delete_file_public(this.id)">删除
                             </button>
                             </li>
                             {{ end }}
+                            </ul>
                             <br>
                             <button onclick="download_all_public_file()">全部下载</button>
                             <br><br><br>
 
                             私有文件：<br>
+                            <ul class="list-group" style="overflow-y: scroll;height:500px;">
                             {{ range $key,$privateFile:=.privateFiles }}
                             <li><a href="/files/private/{{ $privateFile.name }}">{{ $privateFile.name }}
                                 ({{ $privateFile.size }})</a>&emsp;<button id="{{ $privateFile.name }}" onclick="delete_file_private(this.id)">删除
                             </button>
                             </li>
                             {{ end }}
+                            </ul>
                             <br>
                             <button onclick="download_all_private_file()">全部下载</button>
                             <br><br><br>
                             相册文件：
+                            <ul class="list-group" style="overflow-y: scroll;height:500px;">
                             {{ range $key,$albumFile:=.albumFiles }}
                             <li><a href="/files/album/{{ $albumFile.name }}">{{ $albumFile.name }} ({{ $albumFile.size }})</a>&emsp;<button id="{{ $albumFile.name }}" onclick="delete_file_album(this.id)">删除
                             </button>
                             </li>
                             {{ end }}
+                            </ul>
                             <br>
                             <button onclick="download_all_album_file()">全部下载</button>
                             <br>
@@ -747,7 +752,7 @@
             $.ajax(
                 {
                     method: 'DELETE',
-                    url: '/api/album?filename=' + filename,
+                    url: '/api/files/album?filename=' + filename,
                     dataType: 'json',
                     success: function (data) {
                         if (data == 1) {

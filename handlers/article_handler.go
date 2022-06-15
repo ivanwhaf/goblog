@@ -4,6 +4,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/pochard/commons/randstr"
 	"goblog/core"
 	"goblog/stores"
 	"goblog/util"
@@ -15,6 +16,7 @@ import (
 
 // ArticleDetailHandler /article/:tag/:id GET
 func ArticleDetailHandler(c *gin.Context) {
+	session := sessions.Default(c)
 	articleIdStr := c.Param("id")
 	tag := c.Param("tag")
 	articleId := util.StringToInt64(articleIdStr)
@@ -26,18 +28,30 @@ func ArticleDetailHandler(c *gin.Context) {
 
 	reader := strings.NewReader(article.ContentHtml)
 	doc, _ := goquery.NewDocumentFromReader(reader)
-
 	type Node struct {
 		Children []*Node
-		S        string
+		Text     string
 		Id       string
 	}
-	var titleNodeLst []*Node
-	doc.Find("h1").Each(func(i int, selection *goquery.Selection) {
-		node := &Node{}
-		node.Id, _ = selection.Attr("id")
-		node.S = selection.Text()
-		titleNodeLst = append(titleNodeLst, node)
+	var tagNodeLst []*Node
+	var lastH1Node *Node
+	doc.Find("body").Children().Each(func(i int, selection *goquery.Selection) {
+		if selection.Nodes[0].Data == "h1" {
+			node := &Node{}
+			node.Id, _ = selection.Attr("id")
+			node.Text = selection.Text()
+			tagNodeLst = append(tagNodeLst, node)
+			lastH1Node = node
+		} else if selection.Nodes[0].Data == "h2" {
+			node := &Node{}
+			node.Id, _ = selection.Attr("id")
+			node.Text = selection.Text()
+			if lastH1Node != nil {
+				lastH1Node.Children = append(lastH1Node.Children, node)
+			} else {
+				tagNodeLst = append(tagNodeLst, node)
+			}
+		}
 	})
 
 	articles, _ := stores.ArticleStore.GetArticlesOrderByIdWithFields("id", "title", "tag")
@@ -76,13 +90,15 @@ func ArticleDetailHandler(c *gin.Context) {
 			"reviewerId":  strconv.FormatInt(comment.ReviewerId, 10),
 		}
 		if comment.ReviewerId == -1 {
-			commentMap["avatar"] = "/files/avatar/head.jfif/" + "zz"
+			commentMap["avatar"] = "/files/avatar/head.jfif?r=" + randstr.RandomAlphabetic(2)
 		} else {
 			admin, _ := stores.AdminStore.GetAdminById(comment.ReviewerId)
-			commentMap["avatar"] = "/files/avatar/" + admin.Avatar + "/" + "zz"
+			commentMap["avatar"] = "/files/avatar/" + admin.Avatar + "?r=" + randstr.RandomAlphabetic(2)
 		}
 		commentsSlc = append(commentsSlc, commentMap)
 	}
+
+	_ = stores.ArticleStore.UpdateArticleReadCount(articleId)
 
 	c.HTML(http.StatusOK, "article.html", gin.H{
 		"articleId":        article.Id,
@@ -95,8 +111,8 @@ func ArticleDetailHandler(c *gin.Context) {
 		"author":           article.Author,
 		"authorId":         article.AuthorId,
 		"readCount":        article.ReadCount,
-		"createDate":       article.CreateDate,
-		"lastEditDate":     article.LastEditDate,
+		"createDate":       article.CreateDate.Format("2006-01-02 15:03:04"),
+		"lastEditDate":     article.LastEditDate.Format("2006-01-02 15:03:04"),
 		"comments":         commentsSlc,
 		"previousId":       previousId,
 		"previousTag":      previousTag,
@@ -104,7 +120,9 @@ func ArticleDetailHandler(c *gin.Context) {
 		"nextId":           nextId,
 		"nextTag":          nextTag,
 		"nextTagTitle":     nextTagTitle,
-		"titleNodeLst":     titleNodeLst,
+		"tagNodeLst":       tagNodeLst,
+		"username":         session.Get("username"),
+		"nickname":         session.Get("nickname"),
 	})
 }
 
@@ -259,10 +277,10 @@ func ApiArticleRetrievalHandler(c *gin.Context) {
 	ip := c.ClientIP()
 	search, _ := stores.SearchStore.GetLatestSearchByIp(ip)
 	if search.Ip != "" {
-		now := time.Now().Second()
-		lastTime := search.SearchDate.Second()
-		if now-lastTime < 5 {
-			c.String(http.StatusOK, "0")
+		lastTime := search.SearchDate
+		diff := time.Since(lastTime).Seconds()
+		if diff < 5.0 {
+			c.String(200, "0")
 			return
 		}
 	}
@@ -289,7 +307,6 @@ func ApiArticleRetrievalHandler(c *gin.Context) {
 		"articlesTitle":   articlesTitle,
 		"articlesContent": articlesContent,
 	})
-
 }
 
 // ApiCommentsAddHandler /api/comments POST
@@ -322,6 +339,7 @@ func ApiCommentsAddHandler(c *gin.Context) {
 	} else {
 		if replyName == "" {
 			c.String(200, "0")
+			return
 		}
 		reviewerId = -1
 	}

@@ -29,7 +29,11 @@ func ParseUserAgent(ua string) *Env {
 			reg := regexp.MustCompile(browser + "/" + ".*\\s")
 			result := reg.FindString(ua)
 			if len(result) > len(browser)+1 {
-				env.Version = result[len(browser)+1 : len(result)-1]
+				if len(result)-len(browser) >= 20 {
+					env.Version = result[len(browser)+1 : len(browser)+20]
+				} else {
+					env.Version = result[len(browser)+1 : len(result)-1]
+				}
 			}
 			break
 		}

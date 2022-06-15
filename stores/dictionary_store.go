@@ -7,8 +7,7 @@ type DictionaryStoreInterface interface {
 	AddDictionary(dictionary *core.Dictionary) error
 }
 
-type dictionaryStore struct {
-}
+type dictionaryStore struct{}
 
 func NewDictionaryStore() DictionaryStoreInterface {
 	return &dictionaryStore{}

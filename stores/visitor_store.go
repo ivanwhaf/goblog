@@ -8,8 +8,7 @@ type VisitorStoreInterface interface {
 	AddVisitor(visitor *core.Visitor) error
 }
 
-type visitorStore struct {
-}
+type visitorStore struct{}
 
 func NewVisitorStore() VisitorStoreInterface {
 	return &visitorStore{}

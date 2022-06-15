@@ -17,7 +17,6 @@ func IndexHandler(c *gin.Context) {
 	strPage := c.DefaultQuery("page", "1")
 	page, _ := strconv.ParseInt(strPage, 10, 64)
 	articlesCount, _ := stores.ArticleStore.GetArticlesCount()
-	visitorsCount, _ := stores.VisitorStore.GetVisitorsCount()
 
 	if (page-1)*10 >= articlesCount || page < 1 {
 		c.HTML(http.StatusNotFound, "404.html", gin.H{
@@ -52,13 +51,26 @@ func IndexHandler(c *gin.Context) {
 	var articles []*core.Article
 	articles, _ = stores.ArticleStore.GetArticlesOrderByIdOffsetLimit(start, 10)
 
+	var articlesSlc []map[string]string
 	for _, article := range articles {
 		if len(article.ContentText) > 300 {
 			article.ContentText = article.ContentText[:300]
 		}
+		m := make(map[string]string)
+		m["Id"] = strconv.FormatInt(article.Id, 10)
+		m["Tag"] = article.Tag
+		m["Title"] = article.Title
+		m["Subtitle"] = article.Subtitle
+		m["ContentText"] = article.ContentText
+		m["ReadCount"] = strconv.FormatInt(article.ReadCount, 10)
+		m["Author"] = article.Author
+		m["CreateDate"] = article.CreateDate.Format("2006-01-02 15:03:04")
+		articlesSlc = append(articlesSlc, m)
 	}
 
 	session := sessions.Default(c)
+
+	visitorsCount, _ := stores.VisitorStore.GetVisitorsCount()
 
 	c.HTML(http.StatusOK, "index.html", gin.H{
 		"username":        session.Get("username"),
@@ -69,7 +81,7 @@ func IndexHandler(c *gin.Context) {
 		"pageMul10":       page * 10,
 		"articlesCount":   articlesCount,
 		"visitorsCount":   visitorsCount + 1,
-		"articles":        articles,
+		"articles":        articlesSlc,
 		"popularArticles": popularArticles,
 	})
 }

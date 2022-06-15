@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"goblog/stores"
 	"net/http"
@@ -10,12 +11,13 @@ import (
 
 // ArchivesHandler /archives GET
 func ArchivesHandler(c *gin.Context) {
+	session := sessions.Default(c)
 	articles, _ := stores.ArticleStore.GetArticlesOrderById()
 	resMap := make(map[string][]map[string]string)
 	for _, article := range articles {
-		createDate := article.CreateDate
-		ymd := createDate.String()
-		ymd = strings.Split(ymd, " ")[0]
+		createDate := article.CreateDate.Format("2006-01-02 15:03:04")
+		slc := strings.Split(createDate, " ")
+		ymd := slc[0]
 		year := ymd[0:4]
 		md := ymd[5:10]
 		if articlesSlc, ok := resMap[year]; ok {
@@ -39,6 +41,8 @@ func ArchivesHandler(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "archives.html", gin.H{
-		"resMap": resMap,
+		"resMap":   resMap,
+		"username": session.Get("username"),
+		"nickname": session.Get("nickname"),
 	})
 }

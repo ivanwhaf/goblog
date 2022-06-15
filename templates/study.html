@@ -23,6 +23,7 @@
 
     <!-- Custom Fonts -->
     <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
     <style type="text/css">
         header.intro-header {
             background-image: url('/static/wallpaper/add.jpg')
@@ -245,7 +246,7 @@
 <script src="/static/js/bootstrap.min.js"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="/static/js/hux-blog.min.js"></script>
+<!--<script src="/static/js/hux-blog.min.js"></script>-->
 
 <script type="text/javascript">
         $("#key").focus();
@@ -305,7 +306,7 @@
         }
 
         function input_change() {
-            key = $("#key").val();
+            let key = $("#key").val();
             if (key === "") {
                 return false;
             }

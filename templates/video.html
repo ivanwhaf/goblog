@@ -2,21 +2,30 @@
 
 <head>
     <title>Video Streaming Demonstration</title>
+<!--    <meta http-equiv="Pragma" content="no-cache">-->
+<!--    <meta http-equiv="Cache-Control" content="no-cache, no-store">-->
+<!--    <meta http-equiv="Expires" content="0">-->
 </head>
 
 <body>
 <h1>视频监控</h1>
-<img src="/api/video/private">
-<br>
-<button id="open" onclick="open_video()">打开</button>
-<button id="close" onclick="close_video()">关闭</button>
+<img id="img">
+<br><br>
+<button id="open" onclick="open_video()">打开视频</button>&emsp;&emsp;
+<button id="close" onclick="close_video()">关闭视频</button>
+<br><br>
+<form>
+    长：<input type="text" id="width" style="width: 100px" value="400" oninput="width_change()">&emsp;
+    宽：<input type="text" id="height" style="width: 100px" value="300" oninput="height_change()">&emsp;
+    帧率：<input type="text" id="fps" style="width:100px" value="1" oninput="fps_change()">
+</form>
 <script src="/static/js/jquery.min.js"></script>
 <script>
 		function close_video() {
 			$.ajax(
 				{
 					method: 'PUT',
-					url: '/api/video/private/status?option=close',
+					url: '/api/video/status?option=close',
 					success: function (data) {
 						if (data == 0) {
 							alert("关闭视频失败！");
@@ -30,7 +39,7 @@
 			$.ajax(
 				{
 					method: 'PUT',
-					url: '/api/video/private/status?option=open',
+					url: '/api/video/status?option=open',
 					success: function (data) {
 						if (data == 0) {
 							alert("打开视频失败！");
@@ -39,6 +48,87 @@
 				}
 			);
 		}
+
+        // function randomString(e) {
+        //     e = e || 32;
+        //     let t = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890", a = t.length, n = "";
+        //     for (let i = 0; i < e; i++) n += t.charAt(Math.floor(Math.random() * a));
+        //     return n
+        // }
+
+        function getVideo() {
+            //$("#img").attr("src","/api/video?r="+randomString(5));
+            //$("#img").attr("src","/api/video?r="+Math.round(Math.random()*10));
+            // $.ajax({
+            //     url: "/api/video",
+            //     type: "GET",
+            //     dataType: "text",
+            //     async: true,
+            //     success: function(data){
+            //         // $("#img").onload=function(e){
+            //         //     window.URL.revokeObjectURL($("#img").src)
+            //         // }
+            //         // $("#img").attr("src","data:image/jpeg;base64,"+data);
+            //         //console.log(window.URL.createObjectURL(data));
+            //         //$("#img").attr("src",window.URL.createObjectURL(data));
+            //         //$("#img").srcObject=data;
+            //
+            //
+            //         const blog=new Blob([data],{type:"image/jpeg"});
+            //         // const objectUrl=URL.createObjectURL(blog);
+            //         // $("#img").attr("src",objectUrl);
+            //         img=$("#img");
+            //         img.load(function (e){
+            //             windowURL.revokeObjectURL(img.src);
+            //         }).attr("src",window.URL.createObjectURL(blog))
+            //     }
+            // });
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/video?"+"width="+width+"&height="+height+"&fps="+fps, true);
+            xhr.responseType = "blob";
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    const blob = this.response;
+                    //var img = document.createElement("img");
+                    let img = document.getElementById("img");
+                    img.onload = function(e) {
+                        window.URL.revokeObjectURL(img.src); // 当图片加载完成后清除释放
+                    };
+                    img.src = window.URL.createObjectURL(blob);
+                }
+            }
+            xhr.send();
+        }
+
+        function fps_change(){
+            let temp=parseFloat($("#fps").val());
+            if (isNaN(temp) || temp<=0.1 || temp>30){
+                return;
+            }
+            fps=temp;
+            clearInterval(timer);
+            timer=setInterval(getVideo,Math.floor(1/fps*1000));
+        }
+        function width_change(){
+            let temp=parseInt($("#width").val());
+            if (isNaN(temp) || temp<=0 || temp>1920){
+                return;
+            }
+            width=temp;
+            $("#img").attr("width",width);
+        }
+        function height_change(){
+            let temp=parseInt($("#height").val());
+            if (isNaN(temp) || temp<=0 || temp>1080){
+                return;
+            }
+            height=temp;
+            $("#img").attr("height",height);
+        }
+
+        let fps=1,width=400,height=300;
+        let timer=setInterval(getVideo,1000);
 </script>
 </body>
 

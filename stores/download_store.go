@@ -6,8 +6,7 @@ type DownloadStoreInterface interface {
 	AddDownload(upload *core.Download) error
 }
 
-type downloadStore struct {
-}
+type downloadStore struct{}
 
 func NewDownloadStore() DownloadStoreInterface {
 	return &downloadStore{}
