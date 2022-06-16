@@ -15,21 +15,21 @@ func NewVisitorStore() VisitorStoreInterface {
 }
 
 func (*visitorStore) GetVisitorsCount() (int64, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var count int64
 	db.Table("visitor").Count(&count)
 	return count, nil
 }
 
 func (*visitorStore) GetRecentVisitors(limit int64) ([]*core.Visitor, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var visitors []*core.Visitor
 	db.Table("visitor").Order("id desc").Limit(limit).Find(&visitors)
 	return visitors, nil
 }
 
 func (*visitorStore) AddVisitor(visitor *core.Visitor) error {
-	db := GetDB()
+	db := GetMysqlDB()
 	db.Table("visitor").Create(visitor)
 	return nil
 }

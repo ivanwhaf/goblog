@@ -19,8 +19,7 @@ func StudyHandler(c *gin.Context) {
 func ApiStudyDictionaryRetrievalHandler(c *gin.Context) {
 	key := c.DefaultPostForm("key", "")
 	limitStr := c.DefaultPostForm("limit", "5")
-	var limit int64
-	limit = util.StringToInt64(limitStr)
+	limit := util.StringToInt64(limitStr)
 	dictionaries, _ := stores.DictionaryStore.GetRelativeWordsByKey(key, limit)
 	c.JSON(200, gin.H{
 		"words": dictionaries,

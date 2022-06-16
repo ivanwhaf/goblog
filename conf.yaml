@@ -1,8 +1,15 @@
 server:
   port: 80
-db:
+mysql:
   name: mysql
   args: root:111111@(127.0.0.1:3306)/blog?charset=utf8mb4&parseTime=True&loc=Local
+  maxopenconns: 100
+  maxidleconns: 10
+  connmaxlifetime: 60
+redis:
+  addr: localhost:6379
+  password:
+  db: 0
 admin:
   sessionmaxage: 3600
   defaultavatarname: head.jfif

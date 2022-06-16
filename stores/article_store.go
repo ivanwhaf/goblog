@@ -32,21 +32,21 @@ func NewArticleStore() ArticleStoreInterface {
 }
 
 func (*articleStore) GetArticlesOrderById() ([]*core.Article, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var articles []*core.Article
 	db.Table("article").Order("id desc").Find(&articles)
 	return articles, nil
 }
 
 func (s *articleStore) GetArticlesOrderByIdWithFields(fields ...string) ([]*core.Article, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var articles []*core.Article
 	db.Table("article").Order("id desc").Select(fields).Find(&articles)
 	return articles, nil
 }
 
 func (*articleStore) GetArticlesOrderByIdOffsetLimit(offset int64, limit int64) ([]*core.Article, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var articles []*core.Article
 	db.Table("article").Order("id desc").Offset(offset).Limit(limit).Find(&articles)
 	if articles != nil {
@@ -56,28 +56,28 @@ func (*articleStore) GetArticlesOrderByIdOffsetLimit(offset int64, limit int64) 
 }
 
 func (*articleStore) GetMostPopularArticles(limit int64) ([]*core.Article, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var articles []*core.Article
 	db.Table("article").Order("read_count desc").Limit(limit).Find(&articles)
 	return articles, nil
 }
 
 func (*articleStore) GetArticleById(id int64) (*core.Article, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var article core.Article
 	db.Table("article").Where("id = ?", id).Find(&article)
 	return &article, errors.New("not found article")
 }
 
 func (*articleStore) GetLatestArticle() (*core.Article, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	article := core.Article{Id: -1}
 	db.Table("article").Last(&article)
 	return &article, nil
 }
 
 func (*articleStore) GetAllArticlesTags() ([]string, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var tags []string
 	db.Table("article").Pluck("tag", &tags)
 	tags = util.RemoveDuplicates(tags)
@@ -85,46 +85,46 @@ func (*articleStore) GetAllArticlesTags() ([]string, error) {
 }
 
 func (*articleStore) GetRelativeArticlesByTitle(keyword string, fields ...string) ([]*core.Article, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var articles []*core.Article
 	db.Table("article").Select(fields).Where("title LIKE ?", "%"+keyword+"%").Order("id desc").Find(&articles)
 	return articles, nil
 }
 
 func (*articleStore) GetRelativeArticlesByContent(keyword string, fields ...string) ([]*core.Article, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var articles []*core.Article
 	db.Table("article").Select(fields).Where("content_md LIKE ?", "%"+keyword+"%").Order("id desc").Find(&articles)
 	return articles, nil
 }
 
 func (*articleStore) GetArticlesCount() (int64, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var count int64
 	db.Table("article").Count(&count)
 	return count, nil
 }
 
 func (*articleStore) AddArticle(article *core.Article) error {
-	db := GetDB()
+	db := GetMysqlDB()
 	db.Table("article").Create(article)
 	return nil
 }
 
 func (*articleStore) UpdateArticleReadCount(id int64) error {
-	db := GetDB()
+	db := GetMysqlDB()
 	db.Table("article").Where("id = ?", id).Update("read_count", gorm.Expr("read_count + ?", 1))
 	return nil
 }
 
 func (*articleStore) UpdateArticle(id int64, article *core.Article) error {
-	db := GetDB()
+	db := GetMysqlDB()
 	db.Table("article").Where("id = ?", id).Update(article)
 	return nil
 }
 
 func (*articleStore) DeleteArticle(id int64) error {
-	db := GetDB()
+	db := GetMysqlDB()
 	db.Table("article").Where("id = ?", id).Delete(&core.Article{})
 	return nil
 }

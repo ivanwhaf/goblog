@@ -14,14 +14,14 @@ func NewSearchStore() SearchStoreInterface {
 }
 
 func (s searchStore) GetLatestSearchByIp(ip string) (*core.Search, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var search core.Search
 	db.Table("search").Where("ip = ?", ip).Last(&search)
 	return &search, nil
 }
 
 func (s searchStore) AddSearch(search *core.Search) error {
-	db := GetDB()
+	db := GetMysqlDB()
 	db.Table("search").Create(search)
 	return nil
 }

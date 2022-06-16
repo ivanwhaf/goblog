@@ -27,10 +27,20 @@ type File struct {
 	RobotsTxtPath         string
 }
 
-type DB struct {
-	Name string
-	Args string
+type MySQL struct {
+	Name            string
+	Args            string
+	MaxOpenConns    int
+	MaxIdleConns    int
+	ConnMaxLifeTime int // seconds
 }
+
+type Redis struct {
+	Addr     string
+	Password string
+	DB       int
+}
+
 type Admin struct {
 	SessionMaxAge     int
 	DefaultAvatarName string
@@ -45,9 +55,11 @@ type Turing struct {
 	TuringApiUrl string
 	TuringKey    string
 }
+
 type Config struct {
 	Server Server
-	DB     DB
+	MySQL  MySQL
+	Redis  Redis
 	Admin  Admin
 	File   File
 	Wechat Wechat

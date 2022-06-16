@@ -13,7 +13,7 @@ func NewDownloadStore() DownloadStoreInterface {
 }
 
 func (d downloadStore) AddDownload(download *core.Download) error {
-	db := GetDB()
+	db := GetMysqlDB()
 	db.Table("download").Create(download)
 	return nil
 }

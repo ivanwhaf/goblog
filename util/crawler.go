@@ -36,7 +36,7 @@ func CrawlIpLocation(ip string) string {
 	err = json.Unmarshal(body, &m)
 	if err != nil {
 		fmt.Println("json unmarshal failed")
-		return ""
+		return location
 	}
 
 	location += m["addr"]

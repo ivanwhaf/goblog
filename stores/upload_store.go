@@ -13,7 +13,7 @@ func NewUploadStore() UploadStoreInterface {
 }
 
 func (u uploadStore) AddUpload(upload *core.Upload) error {
-	db := GetDB()
+	db := GetMysqlDB()
 	db.Table("upload").Create(upload)
 	return nil
 }

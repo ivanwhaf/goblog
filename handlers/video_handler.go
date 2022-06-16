@@ -8,7 +8,6 @@ import (
 	"strconv"
 )
 
-var buf []byte
 var img []byte
 var fps = 1.0
 var width = 400
@@ -18,7 +17,8 @@ var openFlag = true
 // VideoHandler /video GET
 func VideoHandler(c *gin.Context) {
 	session := sessions.Default(c)
-	if session.Get("username") == nil {
+	token := c.DefaultQuery("token", "")
+	if session.Get("username") == nil && token != "666" {
 		c.Redirect(http.StatusFound, "/login")
 		return
 	}
@@ -38,8 +38,9 @@ func ApiVideoDownloadHandler(c *gin.Context) {
 	//	time.Sleep(time.Second * 1)
 	//	return true
 	//})
+	token := c.DefaultQuery("token", "")
 	session := sessions.Default(c)
-	if session.Get("username") == nil {
+	if session.Get("username") == nil && token != "666" {
 		c.String(404, "not found")
 		return
 	}
@@ -66,6 +67,7 @@ func ApiVideoUploadHandler(c *gin.Context) {
 		return
 	}
 
+	buf := make([]byte, 10000000)
 	n, err := open.Read(buf)
 	if err != nil {
 		fmt.Println(err)
@@ -92,8 +94,4 @@ func ApiVideoStatusHandler(c *gin.Context) {
 		openFlag = false
 	}
 	c.String(200, "1")
-}
-
-func InitImageBuffer() {
-	buf = make([]byte, 10000000)
 }

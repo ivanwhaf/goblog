@@ -7,7 +7,6 @@ import (
 	"goblog/config"
 	"goblog/core"
 	"goblog/services"
-	"goblog/stores"
 	"goblog/util"
 	"io/ioutil"
 	"net/http"
@@ -69,7 +68,7 @@ func FilesPublicHandler(c *gin.Context) {
 		return
 	}
 	env := util.ParseUserAgent(c.Request.UserAgent())
-	go AddDownloadRecord(&core.Download{
+	go services.AddDownloadRecord(&core.Download{
 		Filename:     fileName,
 		Ip:           c.ClientIP(),
 		DownloadDate: time.Now(),
@@ -137,7 +136,7 @@ func ApiFilesPublicUploadHandler(c *gin.Context) {
 	}
 	fmt.Println("shit")
 	env := util.ParseUserAgent(c.Request.UserAgent())
-	go AddUploadRecord(&core.Upload{
+	go services.AddUploadRecord(&core.Upload{
 		Filename:   name,
 		Ip:         c.ClientIP(),
 		UploadDate: time.Now(),
@@ -394,8 +393,10 @@ func ApiFilesDownloadPermissionHandler(c *gin.Context) {
 		config.GetConfig().File.DownloadPermission = false
 		c.String(200, "0")
 		return
+	} else {
+		c.String(200, "-1")
+		return
 	}
-	c.String(200, "-1")
 }
 
 // ApiFilesPublicDeleteHandler /api/files/public DELETE
@@ -481,14 +482,4 @@ func ApiFilesAlbumDeleteHandler(c *gin.Context) {
 		return
 	}
 	c.String(200, "1")
-}
-
-func AddUploadRecord(u *core.Upload) {
-	u.Location = GetLocation(u.Ip)
-	_ = stores.UploadStore.AddUpload(u)
-}
-
-func AddDownloadRecord(d *core.Download) {
-	d.Location = GetLocation(d.Ip)
-	_ = stores.DownloadStore.AddDownload(d)
 }

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"goblog/config"
-	"goblog/handlers"
 	"goblog/routers"
+	"goblog/services"
 	"goblog/stores"
 )
 
@@ -37,22 +37,18 @@ import (
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	config.LoadConfig()
-
 	Init()
-
 	router := routers.InitRouter()
 	router.LoadHTMLGlob("templates/*")
 	router.Static("static", "static")
-
 	err := router.Run(":" + config.GetConfig().Server.Port)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("go blog start.")
+	fmt.Println("go-blog start.")
 }
 
 func Init() {
-	stores.Setup()
-	handlers.InitImageBuffer()
-	handlers.TokenRoutineStart()
+	stores.Init()
+	services.TokenRoutineStart()
 }

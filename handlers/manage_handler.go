@@ -8,7 +8,6 @@ import (
 	"goblog/stores"
 	"goblog/util"
 	"net/http"
-	"strconv"
 )
 
 // ManageHandler /manage GET
@@ -26,48 +25,27 @@ func ManageHandler(c *gin.Context) {
 		return
 	}
 
+	// articles
 	articles, _ := stores.ArticleStore.GetArticlesOrderByIdWithFields("id", "title", "tag", "create_date", "author")
 
-	comments, _ := stores.CommentStore.GetCommentsOrderById()
-	var commentsSlc []map[string]string
-	for _, comment := range comments {
-		m := map[string]string{
-			"Id":          strconv.FormatInt(comment.Id, 10),
-			"ArticleId":   strconv.FormatInt(comment.ArticleId, 10),
-			"ReplyName":   comment.ReplyName,
-			"Content":     comment.Content,
-			"CommentDate": comment.CommentDate.Format("2006-01-02 15:03:04"),
-			"Ip":          comment.Ip,
-			"Location":    comment.Location,
-		}
-		commentsSlc = append(commentsSlc, m)
-	}
-
+	// admins
 	var adminsSlc []map[string]string
-
 	if session.Get("authority") == int8(1) {
 		admins, _ := stores.AdminStore.GetAdmins()
-		for _, admin := range admins {
-			m := map[string]string{
-				"id":        strconv.FormatInt(admin.Id, 10),
-				"username":  admin.Username,
-				"password":  admin.Password,
-				"nickname":  admin.Nickname,
-				"sex":       admin.Sex,
-				"authority": strconv.Itoa(int(admin.Authority)),
-			}
-			latestLogin, _ := stores.LoginStore.GetLatestLoginByUsername(admin.Username)
-			if latestLogin.Ip != "" {
-				m["latestLoginDate"] = latestLogin.LoginDate.Format("2006-01-02 15:03:04")
-			}
-			adminsSlc = append(adminsSlc, m)
-		}
+		adminsSlc = services.GetAdminsSlcForManage(admins)
 	}
+
+	// comments
+	comments, _ := stores.CommentStore.GetCommentsOrderById()
+	commentsSlc := services.GetCommentsSlcForManage(comments)
+
+	// files
 	cfg := config.GetConfig()
 	publicFiles := services.GetFiles(cfg.File.PublicFilePath)
 	privateFiles := services.GetFiles(cfg.File.PrivateFilePath)
 	albumFiles := services.GetFiles(cfg.File.AlbumCompressFilePath)
 
+	// visitors
 	visitors, _ := stores.VisitorStore.GetRecentVisitors(100)
 
 	c.HTML(http.StatusOK, "manage.html", gin.H{

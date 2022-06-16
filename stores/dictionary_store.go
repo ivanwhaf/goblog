@@ -14,14 +14,14 @@ func NewDictionaryStore() DictionaryStoreInterface {
 }
 
 func (d dictionaryStore) GetRelativeWordsByKey(key string, limit int64) ([]*core.Dictionary, error) {
-	db := GetDB()
+	db := GetMysqlDB()
 	var dictionary []*core.Dictionary
 	db.Table("dictionary").Where("key_ LIKE ?", key+"%").Limit(limit).Find(&dictionary)
 	return dictionary, nil
 }
 
 func (d dictionaryStore) AddDictionary(dictionary *core.Dictionary) error {
-	db := GetDB()
+	db := GetMysqlDB()
 	db.Table("dictionary").Create(dictionary)
 	return nil
 }

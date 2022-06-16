@@ -6,6 +6,7 @@ import (
 	"github.com/pochard/commons/randstr"
 	"goblog/config"
 	"goblog/core"
+	"goblog/services"
 	"goblog/stores"
 	"goblog/util"
 	"net/http"
@@ -52,6 +53,7 @@ func AdminAddHandler(c *gin.Context) {
 	}
 	if !util.ElementInSlice(authority.(int8), []int8{1}) {
 		c.HTML(404, "404.html", nil)
+		return
 	}
 	c.HTML(200, "add_admin.html", nil)
 }
@@ -86,7 +88,7 @@ func ApiAdminLoginHandler(c *gin.Context) {
 	if admin.Password != password {
 		ip := c.ClientIP()
 		env := util.ParseUserAgent(c.Request.UserAgent())
-		AddLoginRecord(&core.Login{
+		go services.AddLoginRecord(&core.Login{
 			Ip:        ip,
 			Username:  username,
 			Password:  password,
@@ -118,7 +120,7 @@ func ApiAdminLoginHandler(c *gin.Context) {
 
 	ip := c.ClientIP()
 	env := util.ParseUserAgent(c.Request.UserAgent())
-	AddLoginRecord(&core.Login{
+	go services.AddLoginRecord(&core.Login{
 		Ip:        ip,
 		Username:  username,
 		Password:  password,
@@ -183,6 +185,7 @@ func ApiAdminEditHandler(c *gin.Context) {
 	authorityS := session.Get("authority")
 	if usernameS == nil || (authorityS.(int8) != int8(1) && usernameS.(string) != c.Query("username")) {
 		c.String(200, "-1")
+		return
 	}
 
 	id := c.DefaultPostForm("id", "")
@@ -254,6 +257,7 @@ func ApiAdminDeleteHandler(c *gin.Context) {
 	authority := session.Get("authority")
 	if username == nil || authority.(int8) != int8(1) {
 		c.String(http.StatusOK, "0")
+		return
 	}
 	id := c.DefaultQuery("id", "-1")
 	_ = stores.AdminStore.DeleteAdminById(util.StringToInt64(id))
@@ -297,9 +301,4 @@ func ApiAdminAvatarHandler(c *gin.Context) {
 	_ = stores.AdminStore.UpdateAdminByUsername(username.(string), admin)
 
 	c.String(http.StatusOK, "1")
-}
-
-func AddLoginRecord(l *core.Login) {
-	l.Location = GetLocation(l.Ip)
-	_ = stores.LoginStore.AddLogin(l)
 }

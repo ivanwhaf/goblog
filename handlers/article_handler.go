@@ -4,13 +4,13 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/pochard/commons/randstr"
 	"goblog/core"
+	"goblog/services"
 	"goblog/stores"
 	"goblog/util"
 	"net/http"
-	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -26,79 +26,33 @@ func ArticleDetailHandler(c *gin.Context) {
 		return
 	}
 
-	reader := strings.NewReader(article.ContentHtml)
-	doc, _ := goquery.NewDocumentFromReader(reader)
-	type Node struct {
-		Children []*Node
-		Text     string
-		Id       string
-	}
-	var tagNodeLst []*Node
-	var lastH1Node *Node
-	doc.Find("body").Children().Each(func(i int, selection *goquery.Selection) {
-		if selection.Nodes[0].Data == "h1" {
-			node := &Node{}
-			node.Id, _ = selection.Attr("id")
-			node.Text = selection.Text()
-			tagNodeLst = append(tagNodeLst, node)
-			lastH1Node = node
-		} else if selection.Nodes[0].Data == "h2" {
-			node := &Node{}
-			node.Id, _ = selection.Attr("id")
-			node.Text = selection.Text()
-			if lastH1Node != nil {
-				lastH1Node.Children = append(lastH1Node.Children, node)
-			} else {
-				tagNodeLst = append(tagNodeLst, node)
-			}
-		}
-	})
+	go func() {
+		_ = stores.ArticleStore.UpdateArticleReadCount(articleId)
+	}()
 
-	articles, _ := stores.ArticleStore.GetArticlesOrderByIdWithFields("id", "title", "tag")
+	var wg sync.WaitGroup
+	wg.Add(3)
 
-	var previousId, nextId string
-	var previousTag, nextTag string
-	var previousTagTitle, nextTagTitle string
-	for idx, article := range articles {
-		if article.Id == articleId {
-			if idx > 0 {
-				previousArticle := articles[idx-1]
-				previousId = strconv.FormatInt(previousArticle.Id, 10)
-				previousTag = previousArticle.Tag
-				previousTagTitle = "[" + previousTag + "]" + previousArticle.Title
-			}
-			if idx < len(articles)-1 {
-				nextArticle := articles[idx+1]
-				nextId = strconv.FormatInt(nextArticle.Id, 10)
-				nextTag = nextArticle.Tag
-				nextTagTitle = "[" + nextTag + "]" + nextArticle.Title
-			}
-		}
-	}
-
-	comments, _ := stores.CommentStore.GetCommentsByArticleId(articleId)
+	var contentsNodeLst []*services.Node
+	var previousId, nextId, previousTag, nextTag, previousTagTitle, nextTagTitle string
 	var commentsSlc []map[string]string
-	for _, comment := range comments {
-		commentMap := map[string]string{
-			"replyName":   comment.ReplyName,
-			"content":     comment.Content,
-			"commentDate": comment.CommentDate.String(),
-			"platform":    comment.Platform,
-			"browser":     comment.Browser,
-			"ip":          comment.Ip,
-			"location":    comment.Location,
-			"reviewerId":  strconv.FormatInt(comment.ReviewerId, 10),
-		}
-		if comment.ReviewerId == -1 {
-			commentMap["avatar"] = "/files/avatar/head.jfif?r=" + randstr.RandomAlphabetic(2)
-		} else {
-			admin, _ := stores.AdminStore.GetAdminById(comment.ReviewerId)
-			commentMap["avatar"] = "/files/avatar/" + admin.Avatar + "?r=" + randstr.RandomAlphabetic(2)
-		}
-		commentsSlc = append(commentsSlc, commentMap)
-	}
+	go func() {
+		contentsNodeLst = services.GenerateContentsNodeLst(article.ContentHtml)
+		wg.Done()
+	}()
+	go func() {
+		// haven't been optimized!
+		articles, _ := stores.ArticleStore.GetArticlesOrderByIdWithFields("id", "title", "tag")
+		previousId, nextId, previousTag, nextTag, previousTagTitle, nextTagTitle = services.GetPrevNextArticleInfo(articles, articleId)
+		wg.Done()
+	}()
+	go func() {
+		comments, _ := stores.CommentStore.GetCommentsByArticleId(articleId)
+		commentsSlc = services.GetCommentsSlcForArticle(comments)
+		wg.Done()
+	}()
 
-	_ = stores.ArticleStore.UpdateArticleReadCount(articleId)
+	wg.Wait()
 
 	c.HTML(http.StatusOK, "article.html", gin.H{
 		"articleId":        article.Id,
@@ -120,7 +74,7 @@ func ArticleDetailHandler(c *gin.Context) {
 		"nextId":           nextId,
 		"nextTag":          nextTag,
 		"nextTagTitle":     nextTagTitle,
-		"tagNodeLst":       tagNodeLst,
+		"contentsNodeLst":  contentsNodeLst,
 		"username":         session.Get("username"),
 		"nickname":         session.Get("nickname"),
 	})
@@ -190,10 +144,7 @@ func ApiArticleAddHandler(c *gin.Context) {
 	tag := c.DefaultPostForm("tag", "")
 	contentMd := c.DefaultPostForm("content_md", "")
 	contentHtml := c.DefaultPostForm("content_html", "")
-	reader := strings.NewReader(contentHtml)
-	doc, _ := goquery.NewDocumentFromReader(reader)
-	contentText := doc.Text()
-
+	contentText := services.GetContentText(contentHtml)
 	err := stores.ArticleStore.AddArticle(&core.Article{
 		Title:       title,
 		Subtitle:    subtitle,
@@ -287,7 +238,7 @@ func ApiArticleRetrievalHandler(c *gin.Context) {
 
 	keyword := c.DefaultPostForm("keyword", "")
 	env := util.ParseUserAgent(c.Request.UserAgent())
-	go AddSearchRecord(&core.Search{
+	go services.AddSearchRecord(&core.Search{
 		Ip:         c.ClientIP(),
 		Keyword:    keyword,
 		SearchDate: time.Now(),
@@ -346,7 +297,7 @@ func ApiCommentsAddHandler(c *gin.Context) {
 	articleId := c.DefaultPostForm("article_id", "-1")
 	ua := c.Request.UserAgent()
 	env := util.ParseUserAgent(ua)
-	location := GetLocation(ip)
+	location := services.GetLocation(ip)
 	_ = stores.CommentStore.AddComment(&core.Comment{
 		ArticleId:   util.StringToInt64(articleId),
 		ReplyName:   replyName,
@@ -375,9 +326,4 @@ func ApiCommentsDeleteHandler(c *gin.Context) {
 	id := c.DefaultQuery("id", "")
 	_ = stores.CommentStore.DeleteCommentById(util.StringToInt64(id))
 	c.String(200, "1")
-}
-
-func AddSearchRecord(s *core.Search) {
-	s.Location = GetLocation(s.Ip)
-	_ = stores.SearchStore.AddSearch(s)
 }
