@@ -250,8 +250,9 @@ func ApiArticleRetrievalHandler(c *gin.Context) {
 	articlesTitle, _ := stores.ArticleStore.GetRelativeArticlesByTitle(keyword, "id", "title", "tag")
 	articlesContent, _ := stores.ArticleStore.GetRelativeArticlesByContent(keyword, "id", "title", "tag", "content_text")
 	for _, article := range articlesContent {
-		if len(article.ContentText) > 300 {
-			article.ContentText = article.ContentText[:300]
+		runeText := []rune(article.ContentText)
+		if len(runeText) > 300 {
+			article.ContentText = string(runeText[:300])
 		}
 	}
 	c.JSON(200, gin.H{

@@ -8,8 +8,9 @@ import (
 func GetArticlesSlc(articles []*core.Article) []map[string]string {
 	var articlesSlc []map[string]string
 	for _, article := range articles {
-		if len(article.ContentText) > 300 {
-			article.ContentText = article.ContentText[:300]
+		runeText := []rune(article.ContentText)
+		if len(runeText) > 300 {
+			article.ContentText = string(runeText[:300])
 		}
 		m := make(map[string]string)
 		m["Id"] = strconv.FormatInt(article.Id, 10)
