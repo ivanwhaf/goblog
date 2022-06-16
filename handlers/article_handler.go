@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"github.com/PuerkitoBio/goquery"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"goblog/core"
@@ -9,7 +8,6 @@ import (
 	"goblog/stores"
 	"goblog/util"
 	"net/http"
-	"strings"
 	"sync"
 	"time"
 )
@@ -96,7 +94,7 @@ func ArticleAddHandler(c *gin.Context) {
 	c.HTML(http.StatusOK, "add_article.html", gin.H{"tags": tags})
 }
 
-// ArticleEditHandler /article/:tag/:id/edit
+// ArticleEditHandler /article/:tag/:id/edit GET
 func ArticleEditHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	username := session.Get("username")
@@ -158,6 +156,7 @@ func ApiArticleAddHandler(c *gin.Context) {
 	})
 	if err != nil {
 		c.String(http.StatusOK, "0")
+		return
 	}
 	c.String(http.StatusOK, "1")
 }
@@ -178,9 +177,7 @@ func ApiArticleEditHandler(c *gin.Context) {
 	tag := c.DefaultPostForm("tag", "")
 	contentMd := c.DefaultPostForm("content_md", "")
 	contentHtml := c.DefaultPostForm("content_html", "")
-	reader := strings.NewReader(contentHtml)
-	doc, _ := goquery.NewDocumentFromReader(reader)
-	contentText := doc.Text()
+	contentText := services.GetContentText(contentHtml)
 
 	err := stores.ArticleStore.UpdateArticle(util.StringToInt64(id), &core.Article{
 		Title:        title,

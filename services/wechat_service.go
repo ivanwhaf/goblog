@@ -316,7 +316,6 @@ func HandleTextMsg(c *gin.Context, body []byte) {
 			},
 			MediaId: mediaId,
 		}
-		fmt.Println(replyMsg.ToXml())
 		c.String(200, replyMsg.ToXml())
 		return
 	}
@@ -337,7 +336,6 @@ func HandleTextMsg(c *gin.Context, body []byte) {
 func HandleImageMsg(c *gin.Context, body []byte) {
 	msg := RecImageMsg{}
 	_ = xml.Unmarshal(body, &msg)
-
 	fmt.Println("[Image] From:", msg.FromUserName, msg.PicUrl)
 	savePath := config.GetConfig().File.TempFilePath
 	picName := DownloadPicFromUrl(msg.PicUrl, savePath)
@@ -355,7 +353,6 @@ func HandleImageMsg(c *gin.Context, body []byte) {
 		},
 		MediaId: randomMediaId,
 	}
-	//fmt.Println(replyMsg.ToXml())
 	c.String(200, replyMsg.ToXml())
 }
 
@@ -363,7 +360,6 @@ func HandleVoiceMsg(c *gin.Context, body []byte) {
 	msg := RecVoiceMsg{}
 	_ = xml.Unmarshal(body, &msg)
 	fmt.Println("[Voice] From:", msg.FromUserName, msg.MediaId)
-
 	recognition := msg.Recognition
 	replyMsg := ReplyTextMsg{
 		ReplyMsg: ReplyMsg{

@@ -91,12 +91,6 @@ func FilesAlbumHandler(c *gin.Context) {
 	c.File(config.GetConfig().File.AlbumCompressFilePath + fileName)
 }
 
-// FilesAlbumHandler2 /album/:filename GET
-func FilesAlbumHandler2(c *gin.Context) {
-	fileName := c.Param("filename")
-	c.File(config.GetConfig().File.AlbumCompressFilePath + fileName)
-}
-
 // FilesAvatarHandler /files/avatar/:filename/:r
 func FilesAvatarHandler(c *gin.Context) {
 	fileName := c.Param("filename")

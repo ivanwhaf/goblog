@@ -68,7 +68,7 @@ func GetPrevNextArticleInfo(articles []*core.Article, currentArticleId int64) (s
 func GetCommentsSlcForArticle(comments []*core.Comment) []map[string]string {
 	var commentsSlc []map[string]string
 	for _, comment := range comments {
-		commentMap := map[string]string{
+		m := map[string]string{
 			"replyName":   comment.ReplyName,
 			"content":     comment.Content,
 			"commentDate": comment.CommentDate.String(),
@@ -79,12 +79,12 @@ func GetCommentsSlcForArticle(comments []*core.Comment) []map[string]string {
 			"reviewerId":  strconv.FormatInt(comment.ReviewerId, 10),
 		}
 		if comment.ReviewerId == -1 {
-			commentMap["avatar"] = "/files/avatar/head.jfif?r=" + randstr.RandomAlphabetic(2)
+			m["avatar"] = "/files/avatar/head.jfif"
 		} else {
 			admin, _ := stores.AdminStore.GetAdminById(comment.ReviewerId)
-			commentMap["avatar"] = "/files/avatar/" + admin.Avatar + "?r=" + randstr.RandomAlphabetic(2)
+			m["avatar"] = "/files/avatar/" + admin.Avatar + "?r=" + randstr.RandomAlphabetic(2)
 		}
-		commentsSlc = append(commentsSlc, commentMap)
+		commentsSlc = append(commentsSlc, m)
 	}
 	return commentsSlc
 }
