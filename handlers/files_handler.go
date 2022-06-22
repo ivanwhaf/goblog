@@ -128,7 +128,6 @@ func ApiFilesPublicUploadHandler(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "save upload file error")
 		return
 	}
-	fmt.Println("shit")
 	env := util.ParseUserAgent(c.Request.UserAgent())
 	go services.AddUploadRecord(&core.Upload{
 		Filename:   name,
@@ -166,14 +165,14 @@ func ApiFilesPrivateUploadHandler(c *gin.Context) {
 
 	cfg := config.GetConfig()
 	if !util.ElementInSlice(ext, cfg.File.PrivateFileAllowType) {
-		c.String(http.StatusInternalServerError, "file ext not allowed")
+		c.String(500, "ext not allowed")
 		return
 	}
 
 	err = c.SaveUploadedFile(file, cfg.File.PrivateFilePath+name)
 	if err != nil {
 		fmt.Println("save upload file error", err)
-		c.String(http.StatusInternalServerError, "save upload file error")
+		c.String(500, "save upload file error")
 		return
 	}
 	c.String(http.StatusOK, "1")
@@ -193,7 +192,7 @@ func ApiFilesAlbumUploadHandler(c *gin.Context) {
 
 	form, err := c.MultipartForm()
 	if err != nil {
-		c.String(200, "0")
+		c.String(500, "0")
 		return
 	}
 	files := form.File["file"]
@@ -205,14 +204,14 @@ func ApiFilesAlbumUploadHandler(c *gin.Context) {
 			ext = s[len(s)-1]
 		}
 		if !util.ElementInSlice(ext, cfg.File.AlbumFileAllowType) {
-			c.String(200, "0")
+			c.String(500, "0")
 			return
 		}
 
 		dir, err := ioutil.ReadDir(config.GetConfig().File.AlbumRawFilePath)
 		if err != nil {
 			fmt.Println("read album dir error", err)
-			c.String(200, "0")
+			c.String(500, "0")
 			return
 		}
 		ymd := time.Now().String()[:10]
@@ -231,7 +230,7 @@ func ApiFilesAlbumUploadHandler(c *gin.Context) {
 		err = c.SaveUploadedFile(file, cfg.File.AlbumRawFilePath+fileName)
 		if err != nil {
 			fmt.Println("save upload file error")
-			c.String(http.StatusInternalServerError, "0")
+			c.String(http.StatusInternalServerError, "save upload file error")
 			return
 		}
 		// save compress image
@@ -250,14 +249,14 @@ func ApiFilesAlbumUploadHandler(c *gin.Context) {
 			err = c.SaveUploadedFile(file, cfg.File.AlbumCompressFilePath+fileName)
 			if err != nil {
 				fmt.Println("save upload file error")
-				c.String(http.StatusInternalServerError, "0")
+				c.String(http.StatusInternalServerError, "save upload file error")
 				return
 			}
 		} else {
 			err = c.SaveUploadedFile(file, cfg.File.AlbumCompressFilePath+fileName)
 			if err != nil {
 				fmt.Println("save upload file error")
-				c.String(http.StatusInternalServerError, "0")
+				c.String(http.StatusInternalServerError, "save upload file error")
 				return
 			}
 		}

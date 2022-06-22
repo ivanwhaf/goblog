@@ -11,13 +11,13 @@ redis:
   password:
   db: 0
 admin:
-  sessionmaxage: 3600
+  sessionmaxage: 7200
   defaultavatarname: head.jfif
 file:
   uploadpermission: true
   downloadpermission: true
-  publicfileallowtype: [mp4, jpg, png, gif, txt, doc, pdf, mp3, jpeg, docx, ico, pptx, xls, xlsx, ppt, pptx, py, go, cpp, sql, exe, md, h5, rar, zip, 7z, jfif, apk, webp, db, bmp]
-  privatefileallowtype: [mp4, jpg, png, gif, txt, doc, pdf, mp3, jpeg, docx, ico, pptx, xls, xlsx, ppt, pptx, py, go, cpp, sql, exe, md,h5, rar, zip, 7z, jfif, apk, webp, db, bmp]
+  publicfileallowtype: [mp4, jpg, png, gif, txt, doc, pdf, mp3, jpeg, docx, ico, pptx, xls, xlsx, ppt, pptx, py, go, cpp, sql, exe, md, h5, rar, zip, 7z, jfif, apk, webp, db, bmp, html]
+  privatefileallowtype: [mp4, jpg, png, gif, txt, doc, pdf, mp3, jpeg, docx, ico, pptx, xls, xlsx, ppt, pptx, py, go, cpp, sql, exe, md,h5, rar, zip, 7z, jfif, apk, webp, db, bmp, html]
   albumfileallowtype: [jpg, png, gif, jpeg, jfif, webp, bmp, ico]
   avatarfileallowtype: [jpg, jpeg, png, gif, jfif, bmp, ico]
   publicfilepath: file/public/

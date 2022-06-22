@@ -289,7 +289,7 @@
             uploadUrl: '/api/files/public', // you must set a valid URL here else you will get an error
 <!--            allowedFileExtensions: ['mp4', 'jpg', 'png', 'gif', 'txt', 'doc', 'pdf', 'mp3', 'jpeg', 'docx', 'ico', 'pptx',-->
 <!--                 'xls', 'xlsx', 'ppt', 'pptx', 'py', 'exe', 'h5', 'rar', 'zip', '7z', 'jfif', 'apk', 'webp', 'db'],-->
-            allowedFileExtensions: {{ .publicFileAllowedType }},
+            allowedFileExtensions: {{ .publicFileAllowType }},
             overwriteInitial: false,
             maxFileSize: 300000,
             maxFileCount: 1,
@@ -301,7 +301,7 @@
             uploadUrl: '/api/files/private', // you must set a valid URL here else you will get an error
 <!--            allowedFileExtensions: ['mp4', 'jpg', 'png', 'gif', 'txt', 'doc', 'pdf', 'mp3', 'jpeg', 'docx', 'ico', 'pptx',-->
 <!--                 'xls', 'xlsx', 'ppt', 'pptx', 'py', 'exe', 'h5', 'rar', 'zip', '7z', 'jfif', 'apk', 'webp', 'db'],-->
-            allowedFileExtensions: {{ .privateFileAllowedType }},
+            allowedFileExtensions: {{ .privateFileAllowType }},
             overwriteInitial: false,
             maxFileSize: 300000,
             maxFileCount: 5,
@@ -312,7 +312,7 @@
         $("#file-3").fileinput({
             uploadUrl: '/api/files/album', // you must set a valid URL here else you will get an error
 <!--            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'jfif','webp'],-->
-            allowedFileExtensions: {{ .albumFileAllowedType }},
+            allowedFileExtensions: {{ .albumFileAllowType }},
             overwriteInitial: false,
             maxFileSize: 300000,
             maxFileCount: 5,
@@ -363,18 +363,28 @@
         });
 
         $('#file-1').on('fileuploaderror', function(event, data, msg) {
+            alert("文件上传失败");
+            if(msg!==undefined){
+                alert(msg);
+            }
+        });
+
+        $('#file-2').on('fileuploaderror', function(event, data, msg) {
+            alert("文件上传失败");
             if(msg!==undefined){
                 alert(msg);
             }
         });
 
         $('#file-3').on('fileuploaderror', function(event, data, msg) {
+            alert("文件上传失败");
             if(msg!==undefined){
                 alert(msg);
             }
         });
 
-        $('#file-4').on('fileuploaderror', function(event, data, msg) {
+        $('#file-3').on('filebatchuploaderror', function(event, data, msg) {
+            alert("文件上传失败");
             if(msg!==undefined){
                 alert(msg);
             }
